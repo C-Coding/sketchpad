@@ -28,6 +28,14 @@ let DrawBoardInit = function (id) {
 	//slider模块
 	let slider=new Slider(drawBoardBox);
 	slider.init();
+
+
+	window.addEventListener('resize',(e)=>{
+		drawBoardBox.resize();//box宽高重置
+		drawBoard.resize();//画板背景重置 画板宽高重置并重绘
+		brush.resize();
+		eraser.resize();
+	})
 }
 window.DrawBoardInit = DrawBoardInit;
 

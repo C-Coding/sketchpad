@@ -13,7 +13,6 @@ class Slider {
             sliderBlock.addEventListener('touchstart',(e)=>{
                 e.stopPropagation();
                 e.preventDefault();
-                // console.log(sliderBlock.offsetLeft);
                 current={
                     x:e.touches[0].pageX,
                     left:sliderBlock.offsetLeft

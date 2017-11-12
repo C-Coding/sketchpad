@@ -7,14 +7,14 @@ module.exports = {
     entry: path.join(ROOT_PATH, 'DrawBoard/index.js'),
     //输出的文件名 合并以后的js会命名为bundle.js
     output: {
-        path: path.join(ROOT_PATH, 'dist'),
+        path: path.join(ROOT_PATH, 'docs'),
         filename: 'DrawBoard.js'
     },
     resolve: {
         extensions: ['.js'] // 配置简写，配置过后，书写该文件路径的时候可以省略文件后缀
     },
     devServer: {
-        contentBase: './dist',
+        contentBase: './docs',
         // hot:true
     },
     module: {

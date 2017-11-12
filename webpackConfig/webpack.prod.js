@@ -27,7 +27,7 @@ module.exports = merge(common, {
             // sourceMap: true
         }),
         new CleanWebpackPlugin(
-            path.join(ROOT_PATH, 'dist'),
+            path.join(ROOT_PATH, 'docs'),
             {
                 allowExternal: true
             }

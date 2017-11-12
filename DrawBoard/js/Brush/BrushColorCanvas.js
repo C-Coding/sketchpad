@@ -1,15 +1,19 @@
 import colorArr from '../common/colorArr'
 import { getElementLeft, getElementTop } from '../common/common'
-
 class BrushColorCanvas {
     constructor(drawBoardBox, drawBoard) {
-        this.ele = drawBoardBox.ele.querySelector('.__palette');
-        this.w = drawBoardBox.ele.querySelector('.__brushColor').offsetWidth;
+        this.drawBoardBox = drawBoardBox;
+        this.ele = this.drawBoardBox.ele.querySelector('.__palette');
+        this.w = this.drawBoardBox.ele.querySelector('.__brushColor').offsetWidth;
         this.h = 40;
-        this.top = () => { return getElementTop(this.ele) };
-        this.left = () => { return getElementLeft(this.ele) };
 
         this.ctx = this.ele.getContext('2d');
+    }
+    top() {
+        return getElementTop(this.ele)
+    }
+    left() {
+        return getElementLeft(this.ele)
     }
     init(drawBoardBox, drawBoard) {
         this.ele.width = this.w;
@@ -39,6 +43,14 @@ class BrushColorCanvas {
 
         this.ele.addEventListener('touchstart', colorChangeFn);
         this.ele.addEventListener('touchmove', colorChangeFn);
+    }
+    resize() {
+        this.w = this.ele.width = this.drawBoardBox.ele.querySelector('.__brushColor').offsetWidth;
+        let ctx = this.ctx;
+        for (let i = 0; i < colorArr.length; i++) {
+            ctx.fillStyle = `rgb(${colorArr[i][0]},${colorArr[i][1]},${colorArr[i][2]})`;
+            ctx.fillRect(i * this.w / colorArr.length, 0, 1, 40);
+        };
     }
 }
 

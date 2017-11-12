@@ -46,6 +46,10 @@ class DrawBoardBox {
 
         this.ele.innerHTML = content;
     }
+    resize(){
+        this.w = this.ele.offsetWidth;
+        this.h = this.ele.offsetHeight;
+    }
 }
 
 export default DrawBoardBox;

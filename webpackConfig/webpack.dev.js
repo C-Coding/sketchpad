@@ -12,7 +12,7 @@ var ROOT_PATH = path.resolve(__dirname,'..');
 module.exports = merge(common, {
     devtool: 'inline-source-map',
     devServer: {
-        contentBase: './dist'
+        contentBase: './docs'
     },
     //添加我们的插件 会自动生成一个html文件
     plugins: [
