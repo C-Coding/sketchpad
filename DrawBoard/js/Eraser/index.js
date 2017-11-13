@@ -1,7 +1,7 @@
 class Eraser {
     constructor(drawBoardBox, drawBoard) {
-        this.drawBoardBox=drawBoardBox;
-        this.drawBoard=drawBoard;
+        this.drawBoardBox = drawBoardBox;
+        this.drawBoard = drawBoard;
 
         this.ele = this.drawBoardBox.ele.querySelector('.__tools>.__eraserBtn');
         this.eraserSizeSlider = this.drawBoardBox.ele.querySelector('.__eraserSize>.__Slider');
@@ -9,7 +9,7 @@ class Eraser {
     init(drawBoardBox, drawBoard) {
 
         this.ele.style.backgroundImage = `url(${require('../../img/eraser.png')})`;
-        this.ele.addEventListener('touchstart', () => {
+        let switchEraser = () => {
             let tools = drawBoardBox.ele.querySelectorAll('.__tools>button');
             for (let i = 0; i < tools.length; i++) {
                 tools[i].classList.remove('__buttonActive');
@@ -20,9 +20,10 @@ class Eraser {
                 option[i].classList.remove('__optionTransition');
             }
             drawBoardBox.ele.querySelector('.__eraserOption').classList.toggle('__optionTransition');
-            drawBoard.switchEraser();
-        });
-
+            drawBoard.tool = 'eraser';
+        }
+        this.ele.addEventListener('touchstart', switchEraser);
+        this.ele.addEventListener('click', switchEraser);
 
 
 
@@ -31,7 +32,7 @@ class Eraser {
         drawBoardBox.ele.querySelector('.__eraserOption>.__eraserSize>.__currentSize>span').style.width = drawBoard.eraserRadius + 'px';
         drawBoardBox.ele.querySelector('.__eraserOption>.__eraserSize>.__currentSize>span').style.height = drawBoard.eraserRadius + 'px';
 
-        
+
 
         //初始化画笔大小控制位置
         let proportion = (drawBoard.eraserRadius - 1) / (drawBoard.eraserRadiusRange[1] - drawBoard.eraserRadiusRange[0]);
@@ -45,43 +46,60 @@ class Eraser {
             drawBoardBox.ele.querySelector('.__eraserSize>.__currentSize>span').style.height = eraserRadius + 'px';
         })
 
+        let touchstartFn = (e) => {
+            if (this.drawBoard.tool === 'eraser') {
+                let x, y;
+                if (this.drawBoardBox.isMobile) {
+                    x = (e.touches[0].pageX - drawBoard.left()) * window.devicePixelRatio;
+                    y = (e.touches[0].pageY - drawBoard.top()) * window.devicePixelRatio;
+                } else {
+                    x = (e.pageX - drawBoard.left()) * window.devicePixelRatio;
+                    y = (e.pageY - drawBoard.top()) * window.devicePixelRatio;
+                }
 
-
-        drawBoard.ele.addEventListener('touchstart', (e) => {
-            switch (drawBoard.tool) {
-                case 'eraser':
-                    let x = (e.touches[0].pageX - drawBoard.left()) * window.devicePixelRatio;
-                    let y = (e.touches[0].pageY - drawBoard.top()) * window.devicePixelRatio;
-                    drawBoard.clearArc(x, y, drawBoard.eraserRadius);
-                    drawBoard.touchPrevious = [x, y];
-                    break;
+                drawBoard.clearArc(x, y, drawBoard.eraserRadius);
+                drawBoard.touchPrevious = [x, y];
             }
-        })
+        }
 
+        let touchmoveFn = (e) => {
+            if (this.drawBoard.tool === 'eraser') {
+                let x, y;
+                if (this.drawBoardBox.isMobile) {
+                    x = (e.touches[0].pageX - drawBoard.left()) * window.devicePixelRatio;
+                    y = (e.touches[0].pageY - drawBoard.top()) * window.devicePixelRatio;
+                } else {
+                    x = (e.pageX - drawBoard.left()) * window.devicePixelRatio;
+                    y = (e.pageY - drawBoard.top()) * window.devicePixelRatio;
+                }
 
-        drawBoard.ele.addEventListener('touchmove', (e) => {
-            switch (drawBoard.tool) {
-                case 'eraser':
-                    let x = (e.touches[0].pageX - drawBoard.left()) * window.devicePixelRatio;
-                    let y = (e.touches[0].pageY - drawBoard.top()) * window.devicePixelRatio;
-                    let xMove = x - drawBoard.touchPrevious[0];
-                    let yMove = y - drawBoard.touchPrevious[1];
-                    let pathLength = Math.ceil(Math.sqrt(Math.pow(xMove, 2) + Math.pow(yMove, 2)));
-                    if (pathLength > 1) {
-                        let xUnitLength = xMove / pathLength;
-                        let yUnitLength = yMove / pathLength;
-                        for (let i = 0; i < pathLength; i++) {
-                            drawBoard.clearArc(Math.round(xUnitLength * i + drawBoard.touchPrevious[0]), Math.round(yUnitLength * i + drawBoard.touchPrevious[1]), drawBoard.eraserRadius);
-                        }
-                    } else {
-                        drawBoard.clearArc(x, y, drawBoard.eraserRadius);
+                let xMove = x - drawBoard.touchPrevious[0];
+                let yMove = y - drawBoard.touchPrevious[1];
+                let pathLength = Math.ceil(Math.sqrt(Math.pow(xMove, 2) + Math.pow(yMove, 2)));
+                if (pathLength > 1) {
+                    let xUnitLength = xMove / pathLength;
+                    let yUnitLength = yMove / pathLength;
+                    for (let i = 0; i < pathLength; i++) {
+                        drawBoard.clearArc(Math.round(xUnitLength * i + drawBoard.touchPrevious[0]), Math.round(yUnitLength * i + drawBoard.touchPrevious[1]), drawBoard.eraserRadius);
                     }
-                    drawBoard.touchPrevious = [x, y];
-                    break;
+                } else {
+                    drawBoard.clearArc(x, y, drawBoard.eraserRadius);
+                }
+                drawBoard.touchPrevious = [x, y];
             }
-        })
+        }
+        this.drawBoard.ele.addEventListener('touchstart', touchstartFn);
+        this.drawBoard.ele.addEventListener('touchmove', touchmoveFn);
+
+        this.drawBoard.ele.addEventListener('mousedown', (e) => {
+            touchstartFn(e);
+            this.drawBoard.ele.addEventListener('mousemove', touchmoveFn);
+        });
+        window.addEventListener('mouseup', (e) => {
+            this.drawBoard.ele.removeEventListener('mousemove', touchmoveFn);
+        });
     }
-    resize(){
+    resize() {
         let proportion = (this.drawBoard.eraserRadius - 1) / (this.drawBoard.eraserRadiusRange[1] - this.drawBoard.eraserRadiusRange[0]);
         this.eraserSizeSlider.querySelector('span').style.left = proportion * (this.eraserSizeSlider.offsetWidth - this.eraserSizeSlider.querySelector('span').offsetWidth) + 'px';
     }

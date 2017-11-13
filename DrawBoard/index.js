@@ -33,8 +33,8 @@ let DrawBoardInit = function (id) {
 	window.addEventListener('resize',(e)=>{
 		drawBoardBox.resize();//box宽高重置
 		drawBoard.resize();//画板背景重置 画板宽高重置并重绘
-		brush.resize();
-		eraser.resize();
+		brush.resize();//颜色板重绘 slider位置重绘
+		eraser.resize();//slider位置重绘
 	})
 }
 window.DrawBoardInit = DrawBoardInit;

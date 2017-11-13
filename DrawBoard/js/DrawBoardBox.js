@@ -3,8 +3,24 @@ class DrawBoardBox {
         this.ele = document.querySelector(id);
         this.w = this.ele.offsetWidth;
         this.h = this.ele.offsetHeight;
+        this.isMobile = false;
     }
     init() {
+        //移动端判断 决定事件触发方式
+        var sUserAgent = navigator.userAgent.toLowerCase();
+        var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+        var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+        var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+        var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+        var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+        var bIsAndroid = sUserAgent.match(/android/i) == "android";
+        var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+        var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+        if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+            this.isMobile=true;
+        }
+
+
         this.ele.className = '__drawBoardBox'
         let content =
             `
@@ -46,7 +62,7 @@ class DrawBoardBox {
 
         this.ele.innerHTML = content;
     }
-    resize(){
+    resize() {
         this.w = this.ele.offsetWidth;
         this.h = this.ele.offsetHeight;
     }

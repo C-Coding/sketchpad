@@ -30,7 +30,12 @@ class BrushColorCanvas {
         let colorChangeFn = (e) => {
             e.preventDefault();
             e.stopPropagation();
-            let x = e.touches[0].pageX - this.left();
+            let x;
+            if(this.drawBoardBox.isMobile){
+                x = e.touches[0].pageX - this.left();
+            }else{
+                x = e.pageX - this.left();
+            }
             let i = Math.round(x * colorArr.length / this.w);
             if (i <= 0) {//防止触摸超出canvas
                 i = 0;
@@ -43,6 +48,15 @@ class BrushColorCanvas {
 
         this.ele.addEventListener('touchstart', colorChangeFn);
         this.ele.addEventListener('touchmove', colorChangeFn);
+
+        this.ele.addEventListener('mousedown',(e)=>{
+            colorChangeFn(e);
+            this.ele.addEventListener('mousemove',colorChangeFn);
+        });
+        window.addEventListener('mouseup',(e)=>{
+            this.ele.removeEventListener('mousemove',colorChangeFn);
+        })
+
     }
     resize() {
         this.w = this.ele.width = this.drawBoardBox.ele.querySelector('.__brushColor').offsetWidth;

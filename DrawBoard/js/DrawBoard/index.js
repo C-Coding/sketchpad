@@ -36,12 +36,24 @@ class Canvas {
         this.ctx.save();
 
 
-        this.ele.addEventListener('touchstart', (e) => {
-            e.stopPropagation();
+        this.ele.addEventListener('touchstart', function (e) {
+            // e.stopPropagation();
             e.preventDefault();
         })
-        this.ele.addEventListener('touchmove', (e) => {
-            e.stopPropagation();
+        this.ele.addEventListener('touchmove', function (e) {
+            // e.stopPropagation();
+            e.preventDefault();
+        })
+        this.ele.addEventListener('mousedown', function (e) {
+            // e.stopPropagation();
+            e.preventDefault();
+        })
+        this.ele.addEventListener('mousemove', function (e) {
+            // e.stopPropagation();
+            e.preventDefault();
+        })
+        this.ele.addEventListener('mouseup', function (e) {
+            // e.stopPropagation();
             e.preventDefault();
         })
     }
@@ -84,26 +96,19 @@ class Canvas {
         this.eraserRadius = v;
     }
 
-    switchBrush() {
-        this.tool = 'brush';
-    }
-    switchEraser() {
-        this.tool = 'eraser';
-    }
-
     resize() {
         this.backgroundBoard.resize();
 
-        let canvasCopy=document.createElement('canvas');
-        canvasCopy.width=this.ele.width;
-        canvasCopy.height=this.ele.height;
-        canvasCopy.getContext('2d').drawImage(this.ele,0,0);
+        let canvasCopy = document.createElement('canvas');
+        canvasCopy.width = this.ele.width;
+        canvasCopy.height = this.ele.height;
+        canvasCopy.getContext('2d').drawImage(this.ele, 0, 0);
 
         this.ele.width = this.drawBoardBox.w * window.devicePixelRatio;//定义画板宽高
         this.ele.height = this.drawBoardBox.ele.dataset.boardheight * window.devicePixelRatio;
 
-        this.ctx.drawImage(canvasCopy,0,0);
-        canvasCopy=null;
+        this.ctx.drawImage(canvasCopy, 0, 0);
+        canvasCopy = null;
     }
 }
 
