@@ -14,29 +14,36 @@ export default class {
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(this.drawBoard.ele, 0, 0);
-      let a = document.createElement("a");
-      a.href = canvas.toDataURL("image/png");
-      a.download='画板.png';
-      //模拟鼠标点击a标签
-      var event = document.createEvent("MouseEvents");
-      event.initMouseEvent(
-        "click",
-        true,
-        true,
-        document.defaultView,
-        0,
-        0,
-        0,
-        0,
-        0,
-        false,
-        false,
-        false,
-        false,
-        0,
-        null
-      );
-      a.dispatchEvent(event);
+      try {
+        //ie特殊储存方法
+        var blob = canvas.msToBlob();
+        window.navigator.msSaveBlob(blob, "ff.png");
+      } catch (error) {
+        //普通base64储存方法
+        let a = document.createElement("a");
+        a.href = canvas.toDataURL("image/png");
+        a.download = "画板.png";
+        //模拟鼠标点击a标签
+        var event = document.createEvent("MouseEvents");
+        event.initMouseEvent(
+          "click",
+          true,
+          true,
+          document.defaultView,
+          0,
+          0,
+          0,
+          0,
+          0,
+          false,
+          false,
+          false,
+          false,
+          0,
+          null
+        );
+        a.dispatchEvent(event);
+      }
     };
     this.ele.addEventListener("touchstart", saveImgFn);
     this.ele.addEventListener("mousedown", saveImgFn);

@@ -4,7 +4,7 @@ canvas 画板
 画笔工具 支持大小、颜色自定义
 橡皮工具 支持大小自定义
 
-新增另存为图片按钮
+新增另存为图片功能
 
 
 支持鼠标或触摸屏
@@ -12,9 +12,8 @@ canvas 画板
 ## demo
 [https://c-coding.github.io/Drawing-board/](https://c-coding.github.io/Drawing-board/)
 
-#兼容性
+# 兼容性
 支持canvas的现代浏览器
-ie下由于限制直接打开base64格式图片无法使用另存为图片 待解决
 
 # 如何使用
 ## 直接引入
