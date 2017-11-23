@@ -27,6 +27,8 @@ class DrawBoardBox {
         <div class="__tools">
             <button class="__brushBtn __buttonActive"></button>
             <button class="__eraserBtn"></button>
+
+            <span class="__saveImg"></span>
         </div>
         <div class="__toolsOption">
             <div class="__brushOption __option __optionTransition">

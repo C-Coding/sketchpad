@@ -8,7 +8,7 @@ class Eraser {
     }
     init(drawBoardBox, drawBoard) {
 
-        this.ele.style.backgroundImage = `url(${require('../../img/eraser.png')})`;
+        this.ele.style.backgroundImage = `url(${require('./eraser.png')})`;
         let switchEraser = () => {
             let tools = drawBoardBox.ele.querySelectorAll('.__tools>button');
             for (let i = 0; i < tools.length; i++) {

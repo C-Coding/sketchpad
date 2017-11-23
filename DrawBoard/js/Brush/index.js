@@ -15,7 +15,7 @@ class Brush {
         this.brushColorCanvas.init(drawBoardBox, drawBoard);
 
         //初始化画笔切换按钮
-        this.ele.style.backgroundImage = `url(${require('../../img/brush.png')})`;
+        this.ele.style.backgroundImage = `url(${require('./brush.png')})`;
         let switchBrush = () => {
             let tools = drawBoardBox.ele.querySelectorAll('.__tools>button');
             for (let i = 0; i < tools.length; i++) {

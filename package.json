@@ -1,7 +1,7 @@
 {
   "scripts": {
     "watch": "webapck --watch",
-    "dev": "webpack-dev-server --open --host 0.0.0.0 --config ./webpackConfig/webpack.dev.js",
+    "dev": "webpack-dev-server --host 0.0.0.0 --config ./webpackConfig/webpack.dev.js",
     "build": "webpack --config ./webpackConfig/webpack.prod.js"
   },
   "devDependencies": {
