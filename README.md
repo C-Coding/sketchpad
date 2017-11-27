@@ -30,7 +30,7 @@ canvas 画板
 ```
 ## webpack打包
 ```
-npm i git+https://github.com/C-Coding/drawing-board.git#1.0.0 --save
+npm i git+https://github.com/C-Coding/drawing-board.git#1.0.1 --save
 
 <div id="demo" data-boardHeight="300">
 
