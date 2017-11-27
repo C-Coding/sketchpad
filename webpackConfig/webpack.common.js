@@ -4,7 +4,7 @@ var ROOT_PATH = path.resolve(__dirname,'..');
 
 module.exports = {
     //项目的文件夹 可以直接用文件夹名称 默认会找index.js 也可以确定是哪个文件名字
-    entry: path.join(ROOT_PATH, 'DrawBoard/index.js'),
+    entry: path.join(ROOT_PATH, 'src/index.js'),
     //输出的文件名 合并以后的js会命名为bundle.js
     output: {
         path: path.join(ROOT_PATH, 'docs'),
