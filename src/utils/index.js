@@ -1,6 +1,8 @@
+
+
 function getElementLeft(element) {           //计算距离文档左偏移
-    let actualLeft = element.offsetLeft;
-    let current = element.offsetParent;
+    var actualLeft = element.offsetLeft;
+    var current = element.offsetParent;
     while (current !== null) {
         actualLeft += current.offsetLeft;
         current = current.offsetParent;
@@ -8,8 +10,8 @@ function getElementLeft(element) {           //计算距离文档左偏移
     return actualLeft;
 }
 function getElementTop(element) {            //计算距离文档上偏移
-    let actualTop = element.offsetTop;
-    let current = element.offsetParent;
+    var actualTop = element.offsetTop;
+    var current = element.offsetParent;
     while (current !== null) {
         actualTop += current.offsetTop;
         current = current.offsetParent;
@@ -17,7 +19,7 @@ function getElementTop(element) {            //计算距离文档上偏移
     return actualTop;
 }
 
-export {
+module.exports = {
     getElementLeft,
     getElementTop
 }

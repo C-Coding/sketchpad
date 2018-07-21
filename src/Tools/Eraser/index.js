@@ -1,0 +1,3 @@
+class Eraser{
+    constructor(){}
+}

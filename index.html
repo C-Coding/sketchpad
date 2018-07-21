@@ -6,15 +6,32 @@
     <meta name="viewport" content="initial-scale=1.0,width=device-width,user-scalable=0,maximum-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>画板工具</title>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
 </head>
 
 <body>
-    <div id="demo" data-boardHeight="300">
+    <div id="demo">
+        dasfsdf
+        <div></div>
     </div>
     <script>
         window.onload = function () {
-            DrawBoardInit('#demo');
+            const sketchpad = new Sketchpad({
+                el: '#demo',//dom节点 或 可被document.querySelector识别的字符串
+                toolBtnSize: 40,//第一栏工具按钮尺寸 
+                height: 400,//绘图区域高度
+                toolList: ['Brush'],//需要的工具   默认有  Brush
+                saveBtn: true,//保存图片按钮
+                maxRecall: 20//撤回次数    次数过多将引发性能问题
+            });
+
         }
+
     </script>
 </body>
 

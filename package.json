@@ -1,8 +1,7 @@
 {
   "scripts": {
     "watch": "webapck --watch",
-    "dev":
-      "webpack-dev-server --host 0.0.0.0 --config ./webpackConfig/webpack.dev.js",
+    "dev": "webpack-dev-server --host 0.0.0.0 --config ./webpackConfig/webpack.dev.js",
     "build": "webpack --config ./webpackConfig/webpack.prod.js"
   },
   "dependencies": {
@@ -11,6 +10,7 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "css-loader": "^0.28.7",
+    "html-loader": "^0.5.5",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
     "postcss-loader": "^2.0.8",
@@ -40,5 +40,10 @@
     "url": "https://github.com/C-Coding/Drawing-board/issues"
   },
   "homepage": "https://github.com/C-Coding/Drawing-board#readme",
-  "browserslist": ["> 1%", "last 2 versions", "IOS >=8.4", "IE >=6"]
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "IOS >=8.4",
+    "IE >=6"
+  ]
 }
