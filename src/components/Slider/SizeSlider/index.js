@@ -5,10 +5,8 @@ import s from './index.less';
 
 
 class SizeSlider extends Slider {
-    constructor({ ratio, sliderSize }) {//接收ratio决定滑块默认位置 size决定滑块默认大小
+    constructor({ ratio = 0, sliderSize = 30 }) {//接收ratio决定滑块默认位置 size决定滑块默认大小
         super(ratio);
-
-
 
         this.sliderEl.classList.add(s.slider);
         this.sliderEl.style.width = sliderSize + 'px';

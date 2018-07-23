@@ -1,5 +1,5 @@
-const path=require('path');
-
+const path = require('path');
+const config = require('../config');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 
@@ -7,9 +7,9 @@ var HtmlwebpackPlugin = require('html-webpack-plugin');
 var vConsolePlugin = require('vconsole-webpack-plugin');
 
 
-var ROOT_PATH = path.resolve(__dirname,'..');
+var ROOT_PATH = path.resolve(__dirname, '..');
 
-module.exports = merge(common, {
+const devWebpackConfig = merge(common, {
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './docs'
@@ -18,10 +18,18 @@ module.exports = merge(common, {
     plugins: [
         new HtmlwebpackPlugin({
             template: path.join(ROOT_PATH, 'index.html')
-        }),
-        new vConsolePlugin({
-            enable: true // 发布代码前记得改回 false
-        }),
+        })
         // new webpack.HotModuleReplacementPlugin()
     ]
 });
+
+
+if (config.dev.vconsole) {
+    devWebpackConfig.plugins.push(
+        new vConsolePlugin({
+            enable: true
+        }),
+    )
+}
+
+module.exports = devWebpackConfig;

@@ -7,8 +7,10 @@
             flex: 0 0 40px;
             position: relative;
             :global(.tip){
+                box-sizing: border-box;
                 position: absolute;
                 border-radius: 50%;
+                border: 1px solid black;
                 top: 50%;
                 left: 50%;
                 transform: translateX(-50%) translateY(-50%);
@@ -17,8 +19,5 @@
         :global(.sizeSliderBox){
             flex: 1 1;
         }
-    }
-    :global(.colorOption){
-        margin-top: 10px;
     }
 }

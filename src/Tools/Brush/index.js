@@ -4,23 +4,23 @@ import s from './index.less';
 import html from './index.html';
 
 class Brush {
-    constructor({ frontCanvasCtx }) {//接收Sketchpad传递的frontCanvasCtx
-        this.frontCanvasCtx = frontCanvasCtx;
+    constructor({ mainCanvasCtx }) {//接收Sketchpad传递的mainCanvasCtx
+        this.mainCanvasCtx = mainCanvasCtx;
+
+
 
         this.dpr = window.devicePixelRatio;
 
         //定义笔刷属性
-        this.lineWidth = 10;//画笔默认线宽
-        this.lineWidthRange = [5, 50];
+        this.lineWidth = 10;//画笔默认线宽  tip直径
+        this.lineWidthRange = [5, 40];
         this.color = 'black';//默认颜色
 
         this.linePathList = [];//画笔路径坐标数组
 
-        //初始化
-        this.init()
-    }
 
-    init() {
+
+
         //暴露btn
         this.btnEl = document.createElement('button');
         this.btnEl.style.backgroundImage = `url(${require('./brush.png')})`;
@@ -53,17 +53,18 @@ class Brush {
             this.colorChange(e.detail);
         })
 
-        this.optionEl.replaceChild(colorSliderBoxEl,this.optionEl.querySelector('.colorOption'));
+
+        this.optionEl.querySelector('.colorOption').appendChild(colorSliderBoxEl);
+
 
         this.sizeChange(this.lineWidth);
         this.colorChange(this.color);
     }
 
-
     sizeChange(v) {
         this.lineWidth = v;
-        this.tipEl.style.width = v / this.dpr + 'px';
-        this.tipEl.style.height = v / this.dpr + 'px';
+        this.tipEl.style.width = v  + 'px';
+        this.tipEl.style.height = v  + 'px';
     }
 
     colorChange(color) {
@@ -73,7 +74,6 @@ class Brush {
 
 
     drawStartFn(e) {
-        console.log(e);
         this.linePathList.push([e.canvasX, e.canvasY]);
         this.render();
     }
@@ -87,10 +87,14 @@ class Brush {
     drawEndFn(e) {
         const linePathList = [...this.linePathList];
         this.linePathList = [];
+
+
+        const color = this.color;
+        const lineWidth = this.lineWidth * this.dpr;
         return (ctx) => {
             ctx.save();
-            ctx.strokeStyle = this.color;
-            ctx.lineWidth = this.lineWidth;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
             ctx.beginPath();
@@ -113,9 +117,9 @@ class Brush {
             startPoint = this.linePathList[this.linePathList.length - 2]
         }
 
-        const ctx = this.frontCanvasCtx;
+        const ctx = this.mainCanvasCtx;
         ctx.save();
-        ctx.lineWidth = this.lineWidth;
+        ctx.lineWidth = this.lineWidth * this.dpr;
         ctx.strokeStyle = this.color;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';

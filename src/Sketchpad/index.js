@@ -13,6 +13,8 @@ class Sketchpad {
         //最大撤回次数
         this.maxRecall = maxRecall;
 
+        this.saveBtn = saveBtn;
+
 
 
         if (typeof el === 'string') {
@@ -38,11 +40,11 @@ class Sketchpad {
         //工具选项div容器 用于放置各组件对应的选项组合 
         this.optionContainerEl = this.containerEl.querySelector('.optionContainer');
 
-        //前置canvas 用于绘制交互层 对所有工具暴露
+        //前置canvas 用于绘制交互层 对所有工具暴露 默认是display none状态
         this.frontCanvasEl = this.containerEl.querySelector('.frontCanvas');
         this.frontCanvasEl.height = height * this.dpr;//高清适配
         this.frontCanvasCtx = this.frontCanvasEl.getContext('2d');
-        //主体canvas 用于保存绘制图形 不暴露
+        //主体canvas 用于绘制图形 撤销功能在这一层 对所有工具暴露
         this.mainCanvasEl = this.containerEl.querySelector('.mainCanvas');
         this.mainCanvasEl.height = height * this.dpr;
         this.mainCanvasCtx = this.mainCanvasEl.getContext('2d');
@@ -95,19 +97,22 @@ class Sketchpad {
     registerTool(Tool) {//注册tool组件 传入一个组件的构造函数
         const tool = new Tool({
             frontCanvasCtx: this.frontCanvasCtx,//向组件构造函数暴露frontCanvasCtx
+            mainCanvasCtx: this.mainCanvasCtx
         });
 
         tool.btnEl.style.width = this.toolBtnSize + 'px';//根据配置参数设置按钮尺寸
         tool.btnEl.style.height = this.toolBtnSize + 'px';
 
-        tool.btnEl.addEventListener('click', this.toolChange.bind(this, tool))//监听组件的工具按钮点击事件 触发toolChange
+        tool.btnEl.addEventListener('click', () => {
+            this.toolChange(tool);
+        })//监听组件的工具按钮点击事件 触发toolChange
 
 
         this.btnContainerEl.append(tool.btnEl);//将组件的工具按钮节点插入工具按钮容器
         this.optionContainerEl.append(tool.optionEl);//将工具配置选项节点插入工具选项div容器
 
         if (this.currentTool === null) {//如果当前生效tool为空则使用第一个注册的tool 避免构建后无默认选中的tool
-            this.currentTool = tool;
+            this.toolChange(tool);
         }
     }
 
@@ -164,14 +169,14 @@ class Sketchpad {
                 //返回一个ctx渲染函数 
                 const renderFn = this.currentTool.drawEndFn.call(this.currentTool, e);
                 //执行render函数
-                if (renderFn) {
-                    this.render(renderFn);
-                } else {
-                    throw new Error('没有接收到渲染函数');
-                }
+
+                this.render(renderFn);
+
             }
         }
 
+
+        //监听canvas事件 并触发相应函数 由于frontCanvas z-index在mainCanvas之上  所以tool.frontCanvasShow=true时 mainCanvas事件将无法触发
 
         this.frontCanvasEl.addEventListener('touchstart', startFn);
         this.frontCanvasEl.addEventListener('touchmove', moveFn);
@@ -188,17 +193,52 @@ class Sketchpad {
             })
         });
 
+
+        this.mainCanvasEl.addEventListener('touchstart', startFn);
+        this.mainCanvasEl.addEventListener('touchmove', moveFn);
+        this.mainCanvasEl.addEventListener('touchend', endFn);
+
+        //统一鼠标事件触发等同于触摸事件
+        this.mainCanvasEl.addEventListener('mousedown', (e) => {
+            startFn(e)
+            document.body.addEventListener('mousemove', moveFn);
+            document.body.addEventListener('mouseup', function mouseupFn(e) {
+                endFn(e);
+                document.body.removeEventListener('mousemove', moveFn);
+                document.body.removeEventListener('mouseup', mouseupFn);
+            })
+        });
+
+
+
+
+
+
+
+
         //为撤回按钮绑定事件
         this.containerEl.querySelector('.recall').addEventListener('click', () => {
             this.recall();
         })
-
+        if (this.saveBtn) {
+            const saveBtnEl = this.containerEl.querySelector('.save');
+            saveBtnEl.style.display = 'inline-block';
+            saveBtnEl.addEventListener('click', this.save.bind(this, 'btn'));
+        }
     }
 
     toolChange(tool) {//变更当前的tool 传入的是一个tool实例
-        //变更被选中btn为active样式
+        if (this.currentTool) {
+            this.currentTool.optionEl.classList.remove('active');
+            this.currentTool.btnEl.classList.remove('active');
+        }
         // tool.btnEl.classList.add(s.active);
+        tool.btnEl.classList.add('active');
+        tool.optionEl.classList.add('active');
         // this.currentTool.btnEl.classList.remove(s.active);
+
+        this.frontCanvasEl.style.display = tool.frontCanvasShow ? 'block' : 'none';
+
         this.currentTool = tool
     }
 
@@ -208,15 +248,19 @@ class Sketchpad {
         canvasResize(this.mainCanvasEl, this.mainCanvasCtx, this.canvasContainerEl.clientWidth * this.dpr);
         canvasResize(this.recallCanvasEl, this.recallCanvasCtx, this.canvasContainerEl.clientWidth * this.dpr);
     }
-    
+
     render(renderFn) {//接收一个ctx渲染函数
-        renderFn(this.mainCanvasCtx);//对mainCanvas进行绘制
+        if (renderFn.needRender) {
+            renderFn(this.mainCanvasCtx);//对mainCanvas进行绘制
+        }
+
         if (this.renderList.length === this.maxRecall) {//达到撤回上限
             this.renderList[0](this.recallCanvasCtx);//将renderList中最早的绘制函数对recallCanvas进行绘制
             this.renderList.splice(0, 1);//删除最早的渲染函数
         }
         this.renderList.push(renderFn);//将最新的绘制函数写入数组
         this.frontCanvasCtx.clearRect(0, 0, this.frontCanvasEl.width, this.frontCanvasEl.height);//清空frontCanvas
+
     }
 
     recall() {
@@ -241,9 +285,58 @@ class Sketchpad {
 
 
 
-    save() { }
+    save(type) {
 
-    clean() { }
+        if (type === 'btn') {//保存按钮触发
+            const saveCanvas = document.createElement("canvas");
+            saveCanvas.width = this.mainCanvasEl.width;
+            saveCanvas.height = this.mainCanvasEl.height;
+            const ctx = saveCanvas.getContext("2d");
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, saveCanvas.width, saveCanvas.height);
+            ctx.drawImage(this.mainCanvasEl, 0, 0);
+
+            try {
+                //ie兼容
+                const blob = saveCanvas.msToBlob();
+                window.navigator.msSaveBlob(blob, "picture.png");
+            } catch (error) {
+                const a = document.createElement('a');
+                a.href = saveCanvas.toDataURL('image/png');
+                a.target = '__blank';
+                a.download = "picture.png";
+                var event = document.createEvent("MouseEvents");
+                event.initMouseEvent(
+                    "click",
+                    true,
+                    true,
+                    document.defaultView,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    false,
+                    false,
+                    false,
+                    false,
+                    0,
+                    null
+                );
+                a.dispatchEvent(event);
+            }
+        }else{
+            return this.mainCanvasCtx.toDataURL('image/png');
+        }
+
+
+    }
+
+    clean() {
+        this.frontCanvasCtx.clearRect(0, 0, this.frontCanvasEl.width, this.frontCanvasEl.height);
+        this.mainCanvasCtx.clearRect(0, 0, this.mainCanvasEl.width, this.mainCanvasEl.height);
+        this.renderList=[];
+    }
 
     destroy() { }
 }
