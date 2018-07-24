@@ -10,10 +10,10 @@ class Eraser {
         this.mainCanvasCtx = mainCanvasCtx;
         this.dpr = window.devicePixelRatio;
         //橡皮默认直径
-        this.size = 10;
-        this.sizeRange = [5, 40];
+        this.lineWidth = 10;
+        this.lineWidthRange = [5, 40];
 
-        this.clearPathList = [];//记录擦除路径
+        this.linePathList = [];//记录擦除路径
 
 
         this.btnEl = document.createElement('button');
@@ -24,14 +24,14 @@ class Eraser {
         this.optionEl.className = s.option;
 
         this.tipEl = this.optionEl.querySelector('.tip');
-        this.sizeChange(this.size);
+        this.sizeChange(this.lineWidth);
 
 
         const sizeSliderEl = new SizeSlider({
-            ratio: (this.size - this.sizeRange[0]) / (this.sizeRange[1] - this.sizeRange[0])
+            ratio: (this.lineWidth - this.lineWidthRange[0]) / (this.lineWidthRange[1] - this.lineWidthRange[0])
         }).sizeSliderBoxEl;
         sizeSliderEl.addEventListener('sliderChange', (e) => {
-            this.sizeChange((this.sizeRange[1] - this.sizeRange[0]) * e.detail + this.sizeRange[0]);
+            this.sizeChange((this.lineWidthRange[1] - this.lineWidthRange[0]) * e.detail + this.lineWidthRange[0]);
         })
 
 
@@ -40,91 +40,80 @@ class Eraser {
     }
 
     sizeChange(v) {
-        this.size = v;
+        this.lineWidth = v;
         this.tipEl.style.width = v + 'px';
         this.tipEl.style.height = v + 'px';
     }
-
-
-    clearArc(ctx, r, x0, y0, x1, y1) {
-        let x, y;
-        let length;
-        let radian;
-        if (x1 === undefined && y1 === undefined) {
-            x = 0;
-            y = 0;
-            radian = 0;
-            length = 0;
-        } else {
-            x = x1 - x0;
-            y = y1 - y0;
-            if (x === 0) {
-                radian = y >= 0 ? -Math.PI / 2 : Math.PI / 2;
-            } else {
-                radian = Math.atan(y / x);
-
-                if (radian >= 0) {
-                    if (y < 0) {
-                        radian = Math.PI + radian;
-                    }
-                } else {
-                    if (y >= 0) {
-                        radian = -(Math.PI - radian);
-                    }
-                }
-
-            }
-            length = Math.sqrt(x * x + y * y);
-        }
-
-        ctx.save();
-        ctx.translate(x0, y0);
-        ctx.rotate(radian);//x轴旋转
-
-        ctx.moveTo(0, 0);
-        for (let i = 0; i < r; i++) {
-            let c = Math.round(Math.sqrt(r * r - Math.pow(r - i, 2)));
-            ctx.clearRect(-r + i, -c, 1, 2 * c);
-        }
-        ctx.clearRect(0, -r, length, 2 * r);
-
-        for (let i = 0; i < r; i++) {
-            let c = Math.round(Math.sqrt(r * r - Math.pow(i, 2)));
-            ctx.clearRect(length + i, -c, 1, 2 * c);
-        }
-
-        ctx.restore();
-    }
-
     drawStartFn(e) {
-        this.clearPathList.push([e.canvasX, e.canvasY])
-        this.clearArc(this.mainCanvasCtx, this.size / 2 * this.dpr, e.canvasX, e.canvasY);
+        this.linePathList.push([e.canvasX, e.canvasY]);
+        this.render();
     }
 
     drawMoveFn(e) {
-        const prevPoint = this.clearPathList[this.clearPathList.length - 1];
-        this.clearArc(this.mainCanvasCtx, this.size / 2 * this.dpr, prevPoint[0], prevPoint[1], e.canvasX, e.canvasY);
-        this.clearPathList.push([e.canvasX, e.canvasY])
+        this.linePathList.push([e.canvasX, e.canvasY]);
+        this.render();
+
     }
 
     drawEndFn(e) {
-        const clearPathList = [...this.clearPathList];
-        const r = this.size / 2 * this.dpr;
-        this.clearPathList = [];
+        const linePathList = [...this.linePathList];
+        this.linePathList = [];
 
 
-        const renderFn = (ctx) => {
-            if (clearPathList.length === 1) {
-                this.clearArc(ctx, r, clearPathList[0][0], clearPathList[0][1])
-
+        const color = this.color;
+        const lineWidth = this.lineWidth * this.dpr;
+        return (ctx) => {
+            ctx.save();
+            ctx.globalCompositeOperation = 'destination-out';
+            if (linePathList.length === 1) {
+                const point = linePathList[0];
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(point[0], point[1], lineWidth / 2, 0, Math.PI * 2, true);
+                ctx.closePath();
+                ctx.fill();
             } else {
-                for (let i = 0; i < clearPathList.length - 1; i++) {
-                    this.clearArc(ctx, r, clearPathList[i][0], clearPathList[i][1], clearPathList[i + 1][0], clearPathList[i + 1][1])
-                }
+                ctx.strokeStyle = color;
+                ctx.lineWidth = lineWidth;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.beginPath();
+                ctx.moveTo(linePathList[0][0], linePathList[0][1]);
+                for (let i = 1; i < linePathList.length; i++) {
+                    ctx.lineTo(linePathList[i][0], linePathList[i][1]);
+                };
+                ctx.stroke();
             }
-
+            ctx.restore();
         }
-        return renderFn;
+    }
+
+
+    render() {
+        const ctx = this.mainCanvasCtx;
+        ctx.save();
+        ctx.globalCompositeOperation = 'destination-out';
+        if (this.linePathList.length === 1) {
+            const point = this.linePathList[0];
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(point[0], point[1], this.lineWidth / 2 * this.dpr, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fill();
+        } else {
+            const startPoint = this.linePathList[this.linePathList.length - 2]
+            const endPoint = this.linePathList[this.linePathList.length - 1]
+            ctx.lineWidth = this.lineWidth * this.dpr;
+            ctx.strokeStyle = this.color;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            ctx.moveTo(startPoint[0], startPoint[1])
+            ctx.lineTo(endPoint[0], endPoint[1]);
+            ctx.closePath();
+            ctx.stroke();
+        }
+        ctx.restore();
     }
 }
 

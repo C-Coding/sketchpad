@@ -63,8 +63,8 @@ class Brush {
 
     sizeChange(v) {
         this.lineWidth = v;
-        this.tipEl.style.width = v  + 'px';
-        this.tipEl.style.height = v  + 'px';
+        this.tipEl.style.width = v + 'px';
+        this.tipEl.style.height = v + 'px';
     }
 
     colorChange(color) {
@@ -93,46 +93,55 @@ class Brush {
         const lineWidth = this.lineWidth * this.dpr;
         return (ctx) => {
             ctx.save();
-            ctx.strokeStyle = color;
-            ctx.lineWidth = lineWidth;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            ctx.beginPath();
-            ctx.moveTo(linePathList[0][0], linePathList[0][1]);
-            for (let i = 0; i < linePathList.length; i++) {
-                ctx.lineTo(linePathList[i][0], linePathList[i][1]);
-            };
-            ctx.stroke();
+            if (linePathList.length === 1) {
+                const point = linePathList[0];
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(point[0], point[1], lineWidth / 2, 0, Math.PI * 2, true);
+                ctx.closePath();
+                ctx.fill();
+            } else {
+                ctx.strokeStyle = color;
+                ctx.lineWidth = lineWidth;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.beginPath();
+                ctx.moveTo(linePathList[0][0], linePathList[0][1]);
+                for (let i = 1; i < linePathList.length; i++) {
+                    ctx.lineTo(linePathList[i][0], linePathList[i][1]);
+                };
+                ctx.stroke();
+            }
             ctx.restore();
         }
     }
 
 
     render() {
-        let startPoint;
-        let endPoint = this.linePathList[this.linePathList.length - 1];
-        if (this.linePathList.length === 1) {
-            startPoint = this.linePathList[this.linePathList.length - 1]
-        } else {
-            startPoint = this.linePathList[this.linePathList.length - 2]
-        }
-
         const ctx = this.mainCanvasCtx;
         ctx.save();
-        ctx.lineWidth = this.lineWidth * this.dpr;
-        ctx.strokeStyle = this.color;
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
-        ctx.beginPath();
-        ctx.moveTo(startPoint[0], startPoint[1])
-        ctx.lineTo(endPoint[0], endPoint[1]);
-        ctx.closePath();
-        ctx.stroke();
+        if (this.linePathList.length === 1) {
+            const point = this.linePathList[0];
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(point[0], point[1], this.lineWidth / 2 * this.dpr, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fill();
+        } else {
+            const startPoint = this.linePathList[this.linePathList.length - 2]
+            const endPoint = this.linePathList[this.linePathList.length - 1]
+            ctx.lineWidth = this.lineWidth * this.dpr;
+            ctx.strokeStyle = this.color;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            ctx.moveTo(startPoint[0], startPoint[1])
+            ctx.lineTo(endPoint[0], endPoint[1]);
+            ctx.closePath();
+            ctx.stroke();
+        }
         ctx.restore();
     }
-
-
-
 
 }
 

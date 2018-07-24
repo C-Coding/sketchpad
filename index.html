@@ -24,12 +24,12 @@
     <script>
         window.onload = function () {
             const sketchpad = new Sketchpad({
-                el: '#demo',//dom节点 或 可被document.querySelector识别的字符串
-                toolBtnSize: 40,//第一栏工具按钮尺寸 
-                height: 200,//绘图区域高度
-                toolList: ['Brush', 'Eraser'],//需要的工具   默认有  Brush
-                saveBtn: true,//保存图片按钮
-                maxRecall: 5//撤回次数    次数过多将引发性能问题
+                el: '#demo',
+                toolBtnSize: 40,
+                height: 200,
+                toolList: ['Brush', 'Eraser'],
+                saveBtn: true,
+                maxRecall: 20
             });
         }
     </script>
