@@ -7,7 +7,7 @@ module.exports = {
     entry: path.join(ROOT_PATH, 'src/index.js'),
     //输出的文件名 合并以后的js会命名为bundle.js
     output: {
-        path: path.join(ROOT_PATH, 'docs'),
+        path: path.join(ROOT_PATH, 'dist'),
         filename: 'Sketchpad.js'
     },
     resolve: {
@@ -18,7 +18,7 @@ module.exports = {
     },
 
     devServer: {
-        contentBase: './docs',
+        contentBase: './dist',
         // hot:true
     },
     module: {

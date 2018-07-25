@@ -21,7 +21,7 @@
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.17",
     "html-webpack-plugin": "^2.30.1",
-    "uglifyjs-webpack-plugin": "^1.0.1",
+    "uglifyjs-webpack-plugin": "^1.2.7",
     "vconsole-webpack-plugin": "^1.1.2",
     "webpack-dev-server": "2.7.1",
     "webpack-merge": "^4.1.1"

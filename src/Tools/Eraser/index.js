@@ -17,7 +17,7 @@ class Eraser {
 
 
         this.btnEl = document.createElement('button');
-        this.btnEl.style.backgroundImage = `url('${require('./eraser.png')}')`
+        this.btnEl.style.backgroundImage = `url('${require('./eraser.svg')}')`
 
         this.optionEl = document.createElement('div');
         this.optionEl.innerHTML = html;
@@ -29,7 +29,7 @@ class Eraser {
 
         const sizeSliderEl = new SizeSlider({
             ratio: (this.lineWidth - this.lineWidthRange[0]) / (this.lineWidthRange[1] - this.lineWidthRange[0])
-        }).sizeSliderBoxEl;
+        }).El;
         sizeSliderEl.addEventListener('sliderChange', (e) => {
             this.sizeChange((this.lineWidthRange[1] - this.lineWidthRange[0]) * e.detail + this.lineWidthRange[0]);
         })

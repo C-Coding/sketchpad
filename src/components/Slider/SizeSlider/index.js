@@ -26,7 +26,7 @@ class SizeSlider extends Slider {
         this.sizeSliderBoxEl.appendChild(this.sliderBoxEl);
 
 
-
+        this.El=this.sizeSliderBoxEl;
     }
 
 }

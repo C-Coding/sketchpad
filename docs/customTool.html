@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="initial-scale=1.0,width=device-width,user-scalable=0,maximum-scale=1.0" />
+    <title>画板工具</title>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+
+        }
+
+        #demo {
+            margin: 0 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="demo">
+    </div>
+    <script>
+        window.onload = function () {
+            const sketchpad = new Sketchpad({
+                el: '#demo',
+                toolBtnSize: 40,
+                height: 200,
+                toolList: ['Brush', 'Line', 'Eraser'],
+                saveBtn: true,
+                maxRecall: 20
+            });
+
+            //实现一个点击画圆的自定义工具 为了方便理解直接使用es6语法
+            class CustomTool {
+                constructor({ mainCanvasCtx }) {
+                    this.frontCanvasShow = false;//此工具不需要交互 所以关闭frontCanvas层
+                    this.mainCanvasCtx = mainCanvasCtx;
+
+                    this.btnEl = document.createElement('button');//暴露给sketchpad
+                    this.btnEl.innerHTML = '圆';
+
+                    this.optionEl = document.createElement('div');//暴露给sketchpad
+                    this.optionEl.innerHTML = '自定义工具配置';
+
+                    this.r = 10;//圆的半径
+                    this.color = 'black';//圆的颜色
+
+                    this.center = [];//圆心
+                }
+                drawStartFn(e) {
+                    this.center = [e.canvasX, e.canvasY];//记录圆心
+
+                    const ctx = this.mainCanvasCtx;
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.strokeStyle = this.color;
+                    ctx.arc(e.canvasX, e.canvasY, this.r, 0, Math.PI * 2, true);
+                    ctx.stroke();
+                    ctx.restore();
+                }
+
+                drawMoveFn(e) {
+                    //此工具不响应移动事件
+                }
+
+                drawEndFn(e) {
+                    //返回的函数将用于撤销回退功能 所以需要将数据静态化
+                    const r=this.r;
+                    const color=this.color;
+                    const center=[...this.center];
+
+                    const render = (ctx) => {
+                        ctx.save();
+                        ctx.beginPath();
+                        ctx.strokeStyle = color;
+                        ctx.arc(center[0], center[1], r, 0, Math.PI * 2, true);
+                        ctx.stroke();
+                        ctx.restore();
+                    }
+
+                    return render;
+                }
+            }
+
+
+            sketchpad.registerTool(CustomTool);
+        }
+    </script>
+    <script type="text/javascript" src="Sketchpad.js"></script>
+</body>
+
+</html>

@@ -3,7 +3,7 @@ import Slider from '@/components/Slider';
 import s from './index.less';
 
 class ColorSlider extends Slider {
-    constructor() {
+    constructor({height=40}) {
         super()
 
         this.sliderBoxEl.classList.add(s.sliderBox);
@@ -25,6 +25,7 @@ class ColorSlider extends Slider {
 
         this.colorSliderBoxEl = document.createElement('div');
         this.colorSliderBoxEl.className = s.colorSliderBox;
+        this.colorSliderBoxEl.style.height=height+'px';
 
         this.colorSliderBoxEl.appendChild(this.canvasEl);
         this.colorSliderBoxEl.appendChild(this.sliderBoxEl);
@@ -53,6 +54,10 @@ class ColorSlider extends Slider {
             event.initCustomEvent('colorSliderChange', true, false, rgb);
             this.colorSliderBoxEl.dispatchEvent(event);
         })
+
+
+
+        this.El=this.colorSliderBoxEl;
 
     }
 }

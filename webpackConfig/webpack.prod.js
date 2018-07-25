@@ -6,6 +6,8 @@ const common = require('./webpack.common.js');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+
 var ROOT_PATH = path.resolve(__dirname, '..');
 
 
@@ -16,18 +18,16 @@ module.exports = merge(common, {
         new HtmlwebpackPlugin({
             template: path.join(ROOT_PATH, 'index.html')
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            mangle: {
-                except: ['$super', '$', 'exports', 'require']
-                //以上变量‘$super’, ‘$’, ‘exports’ or ‘require’，不会被混淆
+        new UglifyJsPlugin({
+            uglifyOptions: {
+                compress: {
+                    warnings: false
+                }
             },
-            compress: {
-                warnings: false
-            },
-            // sourceMap: true
+            parallel: true
         }),
         new CleanWebpackPlugin(
-            path.join(ROOT_PATH, 'docs'),
+            path.join(ROOT_PATH, 'dist'),
             {
                 allowExternal: true
             }

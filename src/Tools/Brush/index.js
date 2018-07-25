@@ -7,8 +7,6 @@ class Brush {
     constructor({ mainCanvasCtx }) {//接收Sketchpad传递的mainCanvasCtx
         this.mainCanvasCtx = mainCanvasCtx;
 
-
-
         this.dpr = window.devicePixelRatio;
 
         //定义笔刷属性
@@ -23,7 +21,7 @@ class Brush {
 
         //暴露btn
         this.btnEl = document.createElement('button');
-        this.btnEl.style.backgroundImage = `url(${require('./brush.png')})`;
+        this.btnEl.style.backgroundImage = `url(${require('./brush.svg')})`;
 
         //暴露option
         this.optionEl = document.createElement('div');
@@ -37,24 +35,24 @@ class Brush {
 
 
 
-        const sizeSliderBoxEl = new SizeSlider({
+        const sizeSliderEl = new SizeSlider({
             ratio: (this.lineWidth - this.lineWidthRange[0]) / (this.lineWidthRange[1] - this.lineWidthRange[0]),
             sliderSize: 30
-        }).sizeSliderBoxEl;
-        sizeSliderBoxEl.addEventListener('sliderChange', (e) => {
+        }).El;
+        sizeSliderEl.addEventListener('sliderChange', (e) => {
             const size = (this.lineWidthRange[1] - this.lineWidthRange[0]) * e.detail + this.lineWidthRange[0];
             this.sizeChange(size)
         })
-        this.optionEl.querySelector('.sizeSliderBox').appendChild(sizeSliderBoxEl);
+        this.optionEl.querySelector('.sizeSliderBox').appendChild(sizeSliderEl);
 
 
-        const colorSliderBoxEl = new ColorSlider().colorSliderBoxEl;
-        colorSliderBoxEl.addEventListener('colorSliderChange', (e) => {
+        const colorSliderEl = new ColorSlider({}).El;
+        colorSliderEl.addEventListener('colorSliderChange', (e) => {
             this.colorChange(e.detail);
         })
 
 
-        this.optionEl.querySelector('.colorOption').appendChild(colorSliderBoxEl);
+        this.optionEl.querySelector('.colorOption').appendChild(colorSliderEl);
 
 
         this.sizeChange(this.lineWidth);
@@ -137,7 +135,6 @@ class Brush {
             ctx.beginPath();
             ctx.moveTo(startPoint[0], startPoint[1])
             ctx.lineTo(endPoint[0], endPoint[1]);
-            ctx.closePath();
             ctx.stroke();
         }
         ctx.restore();

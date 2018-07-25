@@ -96,7 +96,9 @@ class Sketchpad {
 
     registerTool(Tool) {//注册tool组件 传入一个组件的构造函数
         const tool = new Tool({
+            frontCanvasEl: this.frontCanvasEl,
             frontCanvasCtx: this.frontCanvasCtx,//向组件构造函数暴露frontCanvasCtx
+            mainCanvasEl: this.mainCanvasEl,
             mainCanvasCtx: this.mainCanvasCtx
         });
 
@@ -169,8 +171,7 @@ class Sketchpad {
                 //返回一个ctx渲染函数 
                 const renderFn = this.currentTool.drawEndFn.call(this.currentTool, e);
                 //执行render函数
-
-                this.render(renderFn);
+                renderFn && this.render(renderFn);
 
             }
         }
@@ -325,7 +326,7 @@ class Sketchpad {
                 );
                 a.dispatchEvent(event);
             }
-        }else{
+        } else {
             return this.mainCanvasCtx.toDataURL('image/png');
         }
 
@@ -335,7 +336,7 @@ class Sketchpad {
     clean() {
         this.frontCanvasCtx.clearRect(0, 0, this.frontCanvasEl.width, this.frontCanvasEl.height);
         this.mainCanvasCtx.clearRect(0, 0, this.mainCanvasEl.width, this.mainCanvasEl.height);
-        this.renderList=[];
+        this.renderList = [];
     }
 
     destroy() { }
