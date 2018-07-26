@@ -45,6 +45,7 @@ class ColorSlider extends Slider {
 
         //绑定事件
         this.colorSliderBoxEl.addEventListener('sliderChange', (e) => {
+            e.stopPropagation();
             const color = colorList[Math.round(colorList.length * e.detail)];
             const rgb = `rgb(${color[0]},${color[1]},${color[2]})`
             this.tipEl.style.backgroundColor = rgb;

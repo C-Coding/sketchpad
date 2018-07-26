@@ -13,7 +13,7 @@ class Brush {
 
         //定义笔刷属性
         this.lineWidth = 10;//画笔默认线宽  tip直径
-        this.lineWidthRange = [5, 40];
+        this.lineWidthRange = [2, 40];
         this.color = 'black';//默认颜色
 
         this.startPoint = [];

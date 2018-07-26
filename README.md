@@ -1,5 +1,6 @@
 # Sketchpad
-canvas画板
+
+demo[https://c-coding.github.io/Sketchpad/](https://c-coding.github.io/Sketchpad/)
 
 [changelog](https://github.com/C-Coding/Sketchpad/blob/master/CHANGELOG.md)
 
@@ -14,7 +15,7 @@ canvas画板
                 el: '#demo',
                 toolBtnSize: 40,
                 height: 400,
-                toolList: ['Brush','Line','Eraser'],
+                toolList: ['Brush','Line','Polygon','Eraser'],
                 saveBtn: true,
                 maxRecall: 20
             });
@@ -30,7 +31,7 @@ toolBtnSize: 40,                //第一栏工具按钮尺寸
 
 height: 400,                    //绘图区域高度
 
-toolList: ['Brush','Line','Eraser'],   //需要的工具 默认有 Brush笔刷  Eraser橡皮 Line直线
+toolList: ['Brush','Line','Polygon','Eraser'],   //需要的工具 默认有 Brush笔刷  Eraser橡皮 Line直线 Polygon多边形(包括圆形)
 
 saveBtn: true                   //是否显示保存图片按钮
 
