@@ -4,7 +4,9 @@ import s from './index.less';
 import html from './index.html';
 
 class Brush {
-    constructor({ mainCanvasCtx }) {//接收Sketchpad传递的mainCanvasCtx
+    constructor({ frontCanvasEl,frontCanvasCtx, mainCanvasCtx }) {//接收Sketchpad传递的mainCanvasCtx
+        this.frontCanvasEl=frontCanvasEl;
+        this.frontCanvasCtx=frontCanvasCtx;
         this.mainCanvasCtx = mainCanvasCtx;
 
         this.dpr = window.devicePixelRatio;
@@ -137,6 +139,25 @@ class Brush {
             ctx.lineTo(endPoint[0], endPoint[1]);
             ctx.stroke();
         }
+        ctx.restore();
+    }
+
+    mousemoveFn(e) {
+        const ctx=this.frontCanvasCtx;
+        ctx.clearRect(0, 0, this.frontCanvasEl.width, this.frontCanvasEl.height);
+        ctx.save();
+        ctx.beginPath();
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = 1;
+
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        ctx.shadowBlur = 2;
+        ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+
+        ctx.arc(e.canvasX, e.canvasY, this.lineWidth / 2 * this.dpr, 0, 2 * Math.PI, true);
+        ctx.closePath();
+        ctx.stroke();
         ctx.restore();
     }
 

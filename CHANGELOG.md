@@ -1,3 +1,13 @@
+# 2.3
+
+由于直接暴露了frontCanvasCtx和mainCanvasCtx,frontCanvasShow控制将变得无意义，所以删除了此选项且删除了mainCanvas的事件监听，frontCanvas将默认显示且无法关闭(非破坏性更新，对工具无影响)
+
+新增接口函数：mousemoveFn 为类似橡皮工具绘制鼠标移动标识 不同于drawMoveFn接口只在drawStartFn触发后触发 当检测到此函数时在画布层隐藏鼠标光标
+
+为笔刷，直线，橡皮增加了鼠标移动标识，pc上将更容易分辨笔刷和橡皮的大小(移动端后续考虑支持touch范围 省去手动调节大小)
+
+当没有可用撤销时撤销按钮将变灰
+
 # 2.2
 
 新增多边形工具

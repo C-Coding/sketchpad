@@ -12,10 +12,8 @@ class Sketchpad {
         this.dpr = window.devicePixelRatio;
         //最大撤回次数
         this.maxRecall = maxRecall;
-
+        //是否显示保存按钮
         this.saveBtn = saveBtn;
-
-
 
         if (typeof el === 'string') {
             try {
@@ -69,7 +67,7 @@ class Sketchpad {
         //执行初始化函数 注册toolList中的工具
         this.init(toolList);
     }
-
+    //初始化
     init(toolList) {
         if (!toolList || !toolList.length) {
             throw new Error('传入tools错误');
@@ -93,7 +91,7 @@ class Sketchpad {
         //初始化完毕 显示完整container
         // this.containerEl.style.display = 'block';
     }
-
+    //注册工具
     registerTool(Tool) {//注册tool组件 传入一个组件的构造函数
         const tool = new Tool({
             frontCanvasEl: this.frontCanvasEl,
@@ -117,7 +115,7 @@ class Sketchpad {
             this.toolChange(tool);
         }
     }
-
+    //事件监听初始化 初始化的一部分
     eventListenerInit() {
         const canvasContainerElPosition = {//touchstart mousedown时缓存容器坐标 避免重复计算
             pageX: null,
@@ -170,9 +168,10 @@ class Sketchpad {
             if (this.currentTool.drawEndFn) {
                 //返回一个ctx渲染函数 
                 const renderFn = this.currentTool.drawEndFn.call(this.currentTool, e);
-                //执行render函数
-                renderFn && this.render(renderFn);
 
+                if (renderFn) {//返回了渲染函数
+                    this.render(renderFn);
+                }
             }
         }
 
@@ -194,26 +193,12 @@ class Sketchpad {
             })
         });
 
-
-        this.mainCanvasEl.addEventListener('touchstart', startFn);
-        this.mainCanvasEl.addEventListener('touchmove', moveFn);
-        this.mainCanvasEl.addEventListener('touchend', endFn);
-
-        //统一鼠标事件触发等同于触摸事件
-        this.mainCanvasEl.addEventListener('mousedown', (e) => {
-            startFn(e)
-            document.body.addEventListener('mousemove', moveFn);
-            document.body.addEventListener('mouseup', function mouseupFn(e) {
-                endFn(e);
-                document.body.removeEventListener('mousemove', moveFn);
-                document.body.removeEventListener('mouseup', mouseupFn);
-            })
-        });
-
-
-
-
-
+        //触发mousemove事件后调用工具的  mousemoveFn
+        this.frontCanvasEl.addEventListener('mousemove', (e) => {
+            e.canvasX = (e.pageX - getElementLeft(this.canvasContainerEl)) * this.dpr;
+            e.canvasY = (e.pageY - getElementTop(this.canvasContainerEl)) * this.dpr;
+            this.currentTool.mousemoveFn && this.currentTool.mousemoveFn.call(this.currentTool, e);
+        })
 
 
 
@@ -227,30 +212,37 @@ class Sketchpad {
             saveBtnEl.addEventListener('click', this.save.bind(this, 'btn'));
         }
     }
-
-    toolChange(tool) {//变更当前的tool 传入的是一个tool实例
+    //变更当前的tool 传入的是一个tool实例
+    toolChange(tool) {
+        //切换工具时清空frontcanvas
+        this.frontCanvasCtx.clearRect(0, 0, this.frontCanvasEl.width, this.frontCanvasEl.height);
+        //判断当前tool 移除响应样式
         if (this.currentTool) {
             this.currentTool.optionEl.classList.remove('active');
             this.currentTool.btnEl.classList.remove('active');
         }
-        // tool.btnEl.classList.add(s.active);
+        //为将切换的工具提供active样式
         tool.btnEl.classList.add('active');
         tool.optionEl.classList.add('active');
-        // this.currentTool.btnEl.classList.remove(s.active);
 
-        this.frontCanvasEl.style.display = tool.frontCanvasShow ? 'block' : 'none';
-
-        this.currentTool = tool
+        //切换工具
+        this.currentTool = tool;
+        //是否存在mousemove函数 有测隐藏鼠标光标
+        if (this.currentTool.mousemoveFn) {
+            this.canvasContainerEl.classList.add('noMouse');
+        } else {
+            this.canvasContainerEl.classList.remove('noMouse');
+        }
     }
-
-    resize() {//resize所有的canvas
+    //resize所有的canvas
+    resize() {
         this.frontCanvasEl.width = this.canvasContainerEl.clientWidth * this.dpr;
         //canvas尺寸重置的封装函数 实现了修改canvas大小补清空内容
         canvasResize(this.mainCanvasEl, this.mainCanvasCtx, this.canvasContainerEl.clientWidth * this.dpr);
         canvasResize(this.recallCanvasEl, this.recallCanvasCtx, this.canvasContainerEl.clientWidth * this.dpr);
     }
-
-    render(renderFn) {//接收一个ctx渲染函数
+    //接收一个ctx渲染函数
+    render(renderFn) {
         if (renderFn.needRender) {
             renderFn(this.mainCanvasCtx);//对mainCanvas进行绘制
         }
@@ -262,8 +254,19 @@ class Sketchpad {
         this.renderList.push(renderFn);//将最新的绘制函数写入数组
         this.frontCanvasCtx.clearRect(0, 0, this.frontCanvasEl.width, this.frontCanvasEl.height);//清空frontCanvas
 
+        //处理recallbtn状态
+        this.recallBtnStatus();
     }
 
+    //处理撤销按钮显示状态
+    recallBtnStatus(){//判断recall按钮透明度指示
+        if(this.renderList.length===0){
+            this.containerEl.querySelector('.recall').classList.add('noRecall');
+        }else{
+            this.containerEl.querySelector('.recall').classList.remove('noRecall');
+        }
+    }
+    //执行撤销
     recall() {
         //删除最新的渲染函数
         this.renderList.splice(this.renderList.length - 1, 1);
@@ -282,13 +285,15 @@ class Sketchpad {
         //清空mainCanvas且重新绘制mainCanvas
         this.mainCanvasCtx.clearRect(0, 0, this.mainCanvasEl.width, this.mainCanvasEl.height);
         this.mainCanvasCtx.drawImage(tmpCanvasEl, 0, 0);
+
+        //处理recallbtn状态
+        this.recallBtnStatus();
     }
 
 
-
+    //执行保存
     save(type) {
-
-        if (type === 'btn') {//保存按钮触发
+        if (type === 'btn') {//保存按钮触发 触发浏览器图片下载或tab页
             const saveCanvas = document.createElement("canvas");
             saveCanvas.width = this.mainCanvasEl.width;
             saveCanvas.height = this.mainCanvasEl.height;
@@ -326,19 +331,20 @@ class Sketchpad {
                 );
                 a.dispatchEvent(event);
             }
-        } else {
+        } else {//返回base64
             return this.mainCanvasCtx.toDataURL('image/png');
         }
 
 
     }
-
+    //清空画布同时清空所有撤销记录
     clean() {
         this.frontCanvasCtx.clearRect(0, 0, this.frontCanvasEl.width, this.frontCanvasEl.height);
         this.mainCanvasCtx.clearRect(0, 0, this.mainCanvasEl.width, this.mainCanvasEl.height);
         this.renderList = [];
+        this.recallBtnStatus();
     }
-
+    
     destroy() { }
 }
 

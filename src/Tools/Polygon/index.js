@@ -8,7 +8,6 @@ import html from './index.html';
 
 class Polygon {
     constructor({ frontCanvasEl, frontCanvasCtx }) {//接收Sketchpad传递的mainCanvasCtx
-        this.frontCanvasShow = true;
         this.frontCanvasEl = frontCanvasEl;
         this.frontCanvasCtx = frontCanvasCtx;
 

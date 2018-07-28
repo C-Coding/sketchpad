@@ -35,9 +35,8 @@
 
             //实现一个点击画圆的自定义工具 为了方便理解直接使用es6语法
             class CustomTool {
-                constructor({ mainCanvasCtx }) {
-                    this.frontCanvasShow = false;//此工具不需要交互 所以关闭frontCanvas层
-                    this.mainCanvasCtx = mainCanvasCtx;
+                constructor({ frontCanvasEl, frontCanvasCtx, mainCanvasEl, mainCanvasCtx }) {
+                    this.mainCanvasCtx = mainCanvasCtx;//此工具只需要使用mainCanvas层
 
                     this.btnEl = document.createElement('button');//暴露给sketchpad
                     this.btnEl.innerHTML = '圆';
@@ -51,6 +50,7 @@
                     this.center = [];//圆心
                 }
                 drawStartFn(e) {
+                    console.log(`检测到绘制开始 x:${e.canvasX};y:${e.canvasY}`);
                     this.center = [e.canvasX, e.canvasY];//记录圆心
 
                     const ctx = this.mainCanvasCtx;
@@ -63,14 +63,14 @@
                 }
 
                 drawMoveFn(e) {
-                    //此工具不响应移动事件
+                    console.log(`检测到画笔移动 x:${e.canvasX};y:${e.canvasY}`);
                 }
 
-                drawEndFn(e) {
+                drawEndFn() {
                     //返回的函数将用于撤销回退功能 所以需要将数据静态化
-                    const r=this.r;
-                    const color=this.color;
-                    const center=[...this.center];
+                    const r = this.r;
+                    const color = this.color;
+                    const center = [...this.center];
 
                     const render = (ctx) => {
                         ctx.save();
@@ -82,6 +82,10 @@
                     }
 
                     return render;
+                }
+                
+                mousemoveFn(e){
+                    console.log(`检测到鼠标移动 x:${e.canvasX};y:${e.canvasY}`);
                 }
             }
 

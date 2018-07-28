@@ -1,12 +1,12 @@
+
 import SizeSlider from '@/components/Slider/SizeSlider';
 import s from './index.less';
 import html from './index.html';
 
 class Eraser {
-    constructor({ mainCanvasCtx }) {
-        this.frontCanvasShow = false;//切换到当前组件时 自动关闭front层
-
-
+    constructor({ frontCanvasEl, frontCanvasCtx, mainCanvasCtx }) {
+        this.frontCanvasEl = frontCanvasEl;
+        this.frontCanvasCtx = frontCanvasCtx;
         this.mainCanvasCtx = mainCanvasCtx;
         this.dpr = window.devicePixelRatio;
         //橡皮默认直径
@@ -36,8 +36,10 @@ class Eraser {
 
 
         this.optionEl.querySelector('.sizeSliderBox').appendChild(sizeSliderEl);
-
     }
+
+
+
 
     sizeChange(v) {
         this.lineWidth = v;
@@ -113,6 +115,27 @@ class Eraser {
             ctx.closePath();
             ctx.stroke();
         }
+        ctx.restore();
+    }
+
+
+
+    //渲染橡皮擦交互标识
+    mousemoveFn(e) {
+        const ctx=this.frontCanvasCtx;
+        ctx.clearRect(0, 0, this.frontCanvasEl.width, this.frontCanvasEl.height);
+        ctx.save();
+        ctx.beginPath();
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        ctx.shadowBlur = 2;
+        ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+
+        ctx.strokeStyle = 'gray';
+        ctx.lineWidth = 1;
+        ctx.arc(e.canvasX, e.canvasY, this.lineWidth / 2 * this.dpr, 0, 2 * Math.PI, true);
+        ctx.closePath();
+        ctx.stroke();
         ctx.restore();
     }
 }
