@@ -26,12 +26,8 @@ class Slider {
         this.sliderEl.addEventListener('touchstart', (e) => {
             e.preventDefault();//防止触发mouse事件
             this.sliderStart(e);
-            document.body.addEventListener('touchmove', sliderMoveFn)
-            document.body.addEventListener('touchend', function touchendFn() {
-                document.body.removeEventListener('touchmove', sliderMoveFn)
-                document.body.removeEventListener('touchend', touchendFn);
-            })
         })
+        this.sliderEl.addEventListener('touchmove', sliderMoveFn);
 
 
         this.sliderEl.addEventListener('mousedown', (e) => {
