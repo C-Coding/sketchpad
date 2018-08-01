@@ -1,3 +1,7 @@
+# 2.3.2
+
+延迟resize，防止频繁触发resize导致canvas多次重绘
+
 # 2.3
 
 由于直接暴露了frontCanvasCtx和mainCanvasCtx,frontCanvasShow控制将变得无意义，所以删除了此选项且删除了mainCanvas的事件监听，frontCanvas将默认显示且无法关闭(非破坏性更新，对工具无影响)

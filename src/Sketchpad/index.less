@@ -59,22 +59,20 @@
         cursor: none;
     }
     :global(.canvasContainer){
+        overflow: hidden;
         position: relative;
         background-color: rgb(216, 216, 216);
         background-image: url("@/Sketchpad/img/background.svg");
         box-shadow: 1px 1px 6px 0 rgb(133, 133, 133);
-
         :global(.frontCanvas){
-            width: 100%;
-            height:100%;
+            height: 100%;
             position: absolute;
             top: 0;
             left: 0;
             z-index: 2;
         }
         :global(.mainCanvas){
-            width: 100%;
-            height:100%;
+            height: 100%;
             z-index: 1;
         }
 

@@ -64,6 +64,9 @@ class Sketchpad {
         //当前的工具组件实例    canvas触发事件时会调用实例中的指定函数
         this.currentTool = null;
 
+        //resize延迟调用 防止频繁触发resize
+        this.resizeTimer = null;
+
         //执行初始化函数 注册toolList中的工具
         this.init(toolList);
     }
@@ -84,8 +87,12 @@ class Sketchpad {
 
         //执行事件绑定init
         this.eventListenerInit();
-        //主动触发resize初始化canvas尺寸
-        this.resize();
+        //初始化canvas尺寸
+        this.frontCanvasEl.width = this.canvasContainerEl.clientWidth * this.dpr;
+        this.frontCanvasEl.style.width = this.canvasContainerEl.clientWidth + 'px';
+
+        this.mainCanvasEl.width = this.canvasContainerEl.clientWidth * this.dpr;
+        this.mainCanvasEl.style.width = this.canvasContainerEl.clientWidth + 'px';
         //监听窗口resize
         window.addEventListener('resize', this.resize.bind(this));
         //初始化完毕 显示完整container
@@ -236,10 +243,15 @@ class Sketchpad {
     }
     //resize所有的canvas
     resize() {
-        this.frontCanvasEl.width = this.canvasContainerEl.clientWidth * this.dpr;
-        //canvas尺寸重置的封装函数 实现了修改canvas大小补清空内容
-        canvasResize(this.mainCanvasEl, this.mainCanvasCtx, this.canvasContainerEl.clientWidth * this.dpr);
-        canvasResize(this.recallCanvasEl, this.recallCanvasCtx, this.canvasContainerEl.clientWidth * this.dpr);
+        clearInterval(this.resizeTimer);
+        this.resizeTimer = setTimeout(() => {
+            this.frontCanvasEl.width = this.canvasContainerEl.clientWidth * this.dpr;
+            this.frontCanvasEl.style.width = this.canvasContainerEl.clientWidth + 'px';
+            this.mainCanvasEl.style.width = this.canvasContainerEl.clientWidth + 'px';
+            //canvas尺寸重置的封装函数 实现了修改canvas大小补清空内容
+            canvasResize(this.mainCanvasEl, this.mainCanvasCtx, this.canvasContainerEl.clientWidth * this.dpr);
+            canvasResize(this.recallCanvasEl, this.recallCanvasCtx, this.canvasContainerEl.clientWidth * this.dpr);
+        }, 200);
     }
     //接收一个ctx渲染函数
     render(renderFn) {
@@ -259,10 +271,10 @@ class Sketchpad {
     }
 
     //处理撤销按钮显示状态
-    recallBtnStatus(){//判断recall按钮透明度指示
-        if(this.renderList.length===0){
+    recallBtnStatus() {//判断recall按钮透明度指示
+        if (this.renderList.length === 0) {
             this.containerEl.querySelector('.recall').classList.add('noRecall');
-        }else{
+        } else {
             this.containerEl.querySelector('.recall').classList.remove('noRecall');
         }
     }
@@ -344,7 +356,7 @@ class Sketchpad {
         this.renderList = [];
         this.recallBtnStatus();
     }
-    
+
     destroy() { }
 }
 
