@@ -116,7 +116,9 @@ class CustomTool {
         //如无绘制操作则
         return false;
     }
+    
     //仅在鼠标在canvas上移动时触发  相比drawMoveFn不同处为 drawMoveFn只在drawStartFn触发后触发 当drawStartFn触发后 先触发mousemoveFn 后触发 drawMoveFn
+    //当检测到此函数时鼠标移入会不显示光标 请为此工具在frontCanvas层绘制交互
     mousemoveFn(e){
         const x=event.canvasX;//在event中封装了canvasX 作为点击坐标x轴
         const y=event.canvasY;//在event中封装了canvasY 作为点击坐标y轴

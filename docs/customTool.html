@@ -36,13 +36,16 @@
             //实现一个点击画圆的自定义工具 为了方便理解直接使用es6语法
             class CustomTool {
                 constructor({ frontCanvasEl, frontCanvasCtx, mainCanvasEl, mainCanvasCtx }) {
-                    this.mainCanvasCtx = mainCanvasCtx;//此工具只需要使用mainCanvas层
+                    this.frontCanvasEl = frontCanvasEl;
+                    this.frontCanvasCtx = frontCanvasCtx;
+                    this.mainCanvasCtx = mainCanvasCtx;
 
                     this.btnEl = document.createElement('button');//暴露给sketchpad
                     this.btnEl.innerHTML = '圆';
 
                     this.optionEl = document.createElement('div');//暴露给sketchpad
                     this.optionEl.innerHTML = '自定义工具配置';
+
 
                     this.r = 10;//圆的半径
                     this.color = 'black';//圆的颜色
@@ -83,9 +86,24 @@
 
                     return render;
                 }
-                
-                mousemoveFn(e){
-                    console.log(`检测到鼠标移动 x:${e.canvasX};y:${e.canvasY}`);
+
+                mousemoveFn(e) {
+                    const ctx = this.frontCanvasCtx;
+                    ctx.clearRect(0, 0, this.frontCanvasEl.width, this.frontCanvasEl.height);
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.strokeStyle = 'black';
+                    ctx.lineWidth = 1;
+
+                    ctx.shadowOffsetX = 2;
+                    ctx.shadowOffsetY = 2;
+                    ctx.shadowBlur = 2;
+                    ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+
+                    ctx.arc(e.canvasX, e.canvasY, this.r, 0, 2 * Math.PI, true);
+                    ctx.closePath();
+                    ctx.stroke();
+                    ctx.restore();
                 }
             }
 

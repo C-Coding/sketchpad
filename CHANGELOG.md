@@ -1,3 +1,8 @@
+# 2.3.3
+
+更新文档
+更新customTool demo
+
 # 2.3.2
 
 延迟resize，防止频繁触发resize导致canvas多次重绘
