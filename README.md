@@ -5,7 +5,7 @@
 > [changelog](https://github.com/C-Coding/Sketchpad/blob/master/CHANGELOG.md)
 
 # 使用
-```
+```html
 <div id="demo"></div>
 
 <script>
@@ -23,7 +23,7 @@
 <script src="/Sketchpad.js"></script>//引入js
 ```
 ## option配置
-```
+```js
 el: '#demo',                    //dom节点 或 可被document.querySelector识别的字符串
 
 toolBtnSize: 40,                //第一栏工具按钮尺寸 
@@ -39,7 +39,7 @@ maxRecall: 20                   //撤回次数
 
 # 接口
 
-```
+```js
 const sketchpad = new Sketchpad({options});
 
 
@@ -57,12 +57,10 @@ sketchpad.registerTool();//接收一个自定义工具的构造函数
 
 [自定义工具demo](https://c-coding.github.io/Sketchpad/customTool.html)
 
-```
 使用sketchpad.registerTool()自定义工具
 
-此函数接收一个构造函数//此处直接使用class函数示例
-
-
+此函数接收一个构造函数，此处直接使用class函数示例
+```js
 class CustomTool {
     constructor({//构造函数接收4个参数 根据工具不同自行决定在哪一个canvas上绘制图形
         //前置canvas用于绘制交互层 参考line工具
