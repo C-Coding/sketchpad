@@ -1,16 +1,25 @@
-# Sketchpad
+# sketchpad
 
-> [https://c-coding.github.io/Sketchpad/](https://c-coding.github.io/Sketchpad/)
+> [https://c-coding.github.io/sketchpad/](https://c-coding.github.io/sketchpad/)
 
-> [changelog](https://github.com/C-Coding/Sketchpad/blob/master/CHANGELOG.md)
+> [changelog](https://github.com/C-Coding/sketchpad/blob/master/CHANGELOG.md)
 
 # 使用
-```html
-<div id="demo"></div>
+npm
+```js
+npm i c-sketchpad --save
 
-<script>
-    window.onload = function () {
-        const sketchpad = new Sketchpad({
+const Sketchpad=require('c-sketchpad');
+```
+
+直接引用
+```html
+<script src="/docs/sketchpad.js"></script>
+```
+
+初始化
+```js
+const sketchpad = new Sketchpad({
             el: '#demo',
             toolBtnSize: 40,
             height: 400,
@@ -18,10 +27,8 @@
             saveBtn: true,
             maxRecall: 20
         });
-    }
-</script>
-<script src="/Sketchpad.js"></script>//引入js
 ```
+
 ## option配置
 ```js
 el: '#demo',                    //dom节点 或 可被document.querySelector识别的字符串
@@ -55,7 +62,7 @@ sketchpad.registerTool();//接收一个自定义工具的构造函数
 
 # 自定义工具
 
-[自定义工具demo](https://c-coding.github.io/Sketchpad/customTool.html)
+[自定义工具demo](https://c-coding.github.io/sketchpad/customTool.html)
 
 使用sketchpad.registerTool()自定义工具
 

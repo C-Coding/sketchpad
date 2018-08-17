@@ -13,25 +13,14 @@ var ROOT_PATH = path.resolve(__dirname, '..');
 
 
 module.exports = merge(common, {
-    // devtool: 'source-map',
+    output: {
+        path: path.join(ROOT_PATH, 'build'),
+        filename: 'sketchpad.js',
+        libraryTarget: 'umd'
+    },
     plugins: [
-        new HtmlwebpackPlugin({
-            template: path.join(ROOT_PATH, 'index.html')
-        }),
-        new HtmlwebpackPlugin({
-            filename: 'customTool.html',
-            template: path.join(ROOT_PATH, 'customTool.html')
-        }),
-        new UglifyJsPlugin({
-            uglifyOptions: {
-                compress: {
-                    warnings: false
-                }
-            },
-            parallel: true
-        }),
         new CleanWebpackPlugin(
-            path.join(ROOT_PATH, 'docs'),
+            path.join(ROOT_PATH, 'build'),
             {
                 allowExternal: true
             }
