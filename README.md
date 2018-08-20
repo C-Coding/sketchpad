@@ -1,10 +1,13 @@
 # sketchpad
 
-> [https://c-coding.github.io/sketchpad/](https://c-coding.github.io/sketchpad/)
+> [DEMO](https://c-coding.github.io/sketchpad/)
 
 > [changelog](https://github.com/C-Coding/sketchpad/blob/master/CHANGELOG.md)
 
-# 使用
+> [中文文档](https://github.com/C-Coding/sketchpad/blob/master/README_CN.md)
+
+
+# Use
 npm
 ```js
 npm i c-sketchpad --save
@@ -12,12 +15,12 @@ npm i c-sketchpad --save
 const Sketchpad=require('c-sketchpad');
 ```
 
-直接引用
+src
 ```html
 <script src="/docs/sketchpad.js"></script>
 ```
 
-初始化
+init
 ```js
 const sketchpad = new Sketchpad({
             el: '#demo',
@@ -29,110 +32,109 @@ const sketchpad = new Sketchpad({
         });
 ```
 
-## option配置
+## Option
 ```js
-el: '#demo',                    //dom节点 或 可被document.querySelector识别的字符串
+el: '#demo',                    //dom node or string that can be recognized by document.querySelector
 
-toolBtnSize: 40,                //第一栏工具按钮尺寸 
+toolBtnSize: 40,                //tool button size
 
-height: 400,                    //绘图区域高度
+height: 400,                    //Canvas drawing area height
 
-toolList: ['Brush','Eraser'],   //需要的工具 默认有 Brush笔刷 Eraser橡皮 Line直线 Polygon多边形(包括圆形)
+toolList: ['Brush','Eraser'],   //tool array： Brush Eraser Line Polygon
 
-saveBtn: true                   //是否显示保存图片按钮
+saveBtn: true                   //display the save picture button
 
-maxRecall: 20                   //撤回次数
+maxRecall: 20                   //number of recall
 ```
 
-# 接口
+# Api
 
 ```js
 const sketchpad = new Sketchpad({options});
 
 
-sketchpad.recall();//撤回
+sketchpad.recall();             //active recall
 
-sketchpad.save();//返回绘制图片的png base64格式
+sketchpad.save();               //return the base64 format for drawing the image
 
-sketchpad.clean();//清空内容和所有的撤销记录
+sketchpad.clean();              //empty drawn content and all recording
 
-sketchpad.registerTool();//接收一个自定义工具的构造函数 
+sketchpad.registerTool();       //receive a custom tool constructor
 
 ```
 
-# 自定义工具
+# Custom tool
 
-[自定义工具demo](https://c-coding.github.io/sketchpad/customTool.html)
+[Custom tool demo](https://c-coding.github.io/sketchpad/customTool.html)
 
-使用sketchpad.registerTool()自定义工具
 
-此函数接收一个构造函数，此处直接使用class函数示例
 ```js
 class CustomTool {
-    constructor({//构造函数接收4个参数 根据工具不同自行决定在哪一个canvas上绘制图形
-        //前置canvas用于绘制交互层 参考line工具
-        frontCanvasEl,//前置canvas层dom节点
-        frontCanvasCtx,//前置canvas getContext('2d')渲染上下文
+    constructor({//The constructor receives 4 parameters. It depends on the tool to decide which canvas to draw on.
+        //Pre-canvas for drawing interactive layers Reference Line tool
+        frontCanvasEl,//Pre-canvas layer dom node
+        frontCanvasCtx,//Pre-canvas getContext('2d') rendering context
         
-        //被确认的绘制元素将绘制在主canvas层 撤销功能基于此层
-        mainCnavasEl,//主canvcas层com节点
-        mainCanvasCtx //主canvas 渲染上下文
+        //The confirmed drawing element will be drawn in the main canvas layer. The undo function is based on this layer.
+        mainCnavasEl,//Main canvcas layer com node
+        mainCanvasCtx //Main canvas rendering context
     }) {
 
-        this.frontCanvasCtx = frontCanvasCtx;//赋值 供函数调用
-        this.mainCanvasCtx = mainCanvasCtx;//
+        this.frontCanvasCtx = frontCanvasCtx;
+        this.mainCanvasCtx = mainCanvasCtx;
 
 
-        //暴露工具按钮 将自动插入工具栏  必须
+        //tool button node (Required)
         this.btnEl = document.createElement('button');
 
-        //暴露工具配置 选中此工具时自动显示出此工具配置 必须
+        //option content node (Required)
         this.optionEl = document.createElement('div');
     }
 
 
-    //统一了触摸和鼠标事件触发形式
-    //drawStartFn 对应 touchstart mousedown事件
-    //drawMoveFn 对应 touchmove mousemove且drawStartFn触发后才会响应
-    //drawEndFn 对应 touchend mouseup且drawStartFn触发后才会响应
+    //Unified touch and mouse event triggering
+    //drawStartFn to touchstart mousedown event
+    //drawMoveFn to touchmove mousemove  tip: only respond when drawStartFn triggered
+    //drawEndFn to touchend mouseup  tip: only respond when drawStartFn triggered
     drawStartFn(event) {
-        const x=event.canvasX;//在event中封装了canvasX 作为点击坐标x轴
-        const y=event.canvasY;//在event中封装了canvasY 作为点击坐标y轴
+        const x=event.canvasX;//Encapsulate canvasX as the click coordinate x-axis in the event
+        const y=event.canvasY;//Encapsulate canvasY as the click coordinate y axis in the event
     }
 
     drawMoveFn(event) {
-        const x=event.canvasX;//在event中封装了canvasX 作为点击坐标x轴
-        const y=event.canvasY;//在event中封装了canvasY 作为点击坐标y轴
+        const x=event.canvasX;//Encapsulate canvasX as the click coordinate x-axis in the event
+        const y=event.canvasY;//Encapsulate canvasY as the click coordinate y axis in the event
     }
 
     drawEndFn(event) {
-        //返回一个函数提供给sketchpad的撤销功能记录器
-        const render=(ctx)=>{//接收一个canvas渲染上下文
+        //Returns a function that provides the undo function logger to the sketchpad
+        const render=(ctx)=>{//Provide a canvas rendering context parameter
             ctx.save();
             ctx.moveTo(0,0);
             ctx.lineTo(30,30);
             ctx.stroke();
             ctx.restore();
         }
-        render.needRender=true;//sketchpad接收到函数后是否立即在mainCanvas上绘制 如果工具的绘制在front层则使用true 默认false
+        render.needRender=true;//Whether the sketchpad draws on the mainCanvas immediately after receiving the function （）
 
         return render;
         
-        //如无绘制操作则
+        //Return false if there is no drawing operation
         return false;
     }
     
-    //仅在鼠标在canvas上移动时触发  相比drawMoveFn不同处为 drawMoveFn只在drawStartFn触发后触发 当drawStartFn触发后 先触发mousemoveFn 后触发 drawMoveFn
-    //当检测到此函数时鼠标移入会不显示光标 请为此工具在frontCanvas层绘制交互
+    //Trigger only when the mouse moves over the canvas. Compared to drawMoveFn, drawMoveFn only fires after drawStartFn trigger. When drawStartFn triggers, triggers mouseMoveFn and triggers drawMoveFn.
+    //When the mouse function is detected, the mouse will not display the cursor when it is detected. Please draw the interaction in the frontCanvas layer for this tool.
     mousemoveFn(e){
-        const x=event.canvasX;//在event中封装了canvasX 作为点击坐标x轴
-        const y=event.canvasY;//在event中封装了canvasY 作为点击坐标y轴
+        const x=event.canvasX;//Encapsulate canvasX as the click coordinate x-axis in the event
+        const y=event.canvasY;//Encapsulate canvasY as the click coordinate y axis in the event
     }
 }
 
 
 
 const sketchpad = new Sketchpad({options});
-sketchpad.registerTool(CustomTool);
 
+
+sketchpad.registerTool(CustomTool);//use registerTool function
 ```
