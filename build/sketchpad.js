@@ -594,13 +594,15 @@ module.exports = SizeSlider;
 "use strict";
 
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _colorList = __webpack_require__(22);
 
 var _colorList2 = _interopRequireDefault(_colorList);
 
-var _Slider2 = __webpack_require__(4);
+var _Slider3 = __webpack_require__(4);
 
-var _Slider3 = _interopRequireDefault(_Slider2);
+var _Slider4 = _interopRequireDefault(_Slider3);
 
 var _index = __webpack_require__(23);
 
@@ -614,44 +616,44 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var ColorSlider = function (_Slider) {
-        _inherits(ColorSlider, _Slider);
+var MainColorSlider = function (_Slider) {
+        _inherits(MainColorSlider, _Slider);
 
-        function ColorSlider(_ref) {
+        function MainColorSlider(_ref) {
                 var _ref$height = _ref.height,
                     height = _ref$height === undefined ? 40 : _ref$height;
 
-                _classCallCheck(this, ColorSlider);
+                _classCallCheck(this, MainColorSlider);
 
-                var _this = _possibleConstructorReturn(this, (ColorSlider.__proto__ || Object.getPrototypeOf(ColorSlider)).call(this));
+                var _this = _possibleConstructorReturn(this, (MainColorSlider.__proto__ || Object.getPrototypeOf(MainColorSlider)).call(this));
 
                 _this.sliderBoxEl.classList.add(_index2.default.sliderBox);
 
                 //当前颜色标识
-                _this.tipEl = document.createElement('div');
-                _this.tipEl.className = _index2.default.tip;
+                var tipEl = document.createElement('div');
+                tipEl.className = _index2.default.tip;
 
                 _this.sliderEl.classList.add(_index2.default.slider);
-                _this.sliderEl.appendChild(_this.tipEl);
+                _this.sliderEl.appendChild(tipEl);
 
                 //定义canvas背景
-                _this.canvasEl = document.createElement('canvas');
-                _this.canvasEl.width = _colorList2.default.length;
-                _this.canvasEl.height = 10;
-                _this.canvasEl.className = _index2.default.canvas;
-                _this.canvasCtx = _this.canvasEl.getContext('2d');
+                var canvasEl = document.createElement('canvas');
+                canvasEl.width = _colorList2.default.length;
+                canvasEl.height = 10;
+                canvasEl.className = _index2.default.canvas;
+                var canvasCtx = canvasEl.getContext('2d');
 
-                _this.colorSliderBoxEl = document.createElement('div');
-                _this.colorSliderBoxEl.className = _index2.default.colorSliderBox;
-                _this.colorSliderBoxEl.style.height = height + 'px';
+                var colorSliderBoxEl = document.createElement('div');
+                colorSliderBoxEl.className = _index2.default.colorSliderBox;
+                colorSliderBoxEl.classList.add(_index2.default.mainColorSliderBox);
+                colorSliderBoxEl.style.height = height + 'px';
 
-                _this.colorSliderBoxEl.appendChild(_this.canvasEl);
-                _this.colorSliderBoxEl.appendChild(_this.sliderBoxEl);
+                colorSliderBoxEl.appendChild(canvasEl);
+                colorSliderBoxEl.appendChild(_this.sliderBoxEl);
 
-                var ctx = _this.canvasCtx;
+                var ctx = canvasCtx;
                 ctx.save();
                 _colorList2.default.forEach(function (item, index) {
-                        ctx.restore();
                         ctx.beginPath();
                         ctx.moveTo(index, 0); //移动笔触
                         ctx.lineTo(index, 10); //绘制线条路径
@@ -659,27 +661,172 @@ var ColorSlider = function (_Slider) {
                         ctx.closePath();
                         ctx.stroke();
                 });
+                ctx.restore();
 
                 //绑定事件
-                _this.colorSliderBoxEl.addEventListener('sliderChange', function (e) {
+                colorSliderBoxEl.addEventListener('sliderChange', function (e) {
                         e.stopPropagation();
                         var color = _colorList2.default[Math.round(_colorList2.default.length * e.detail)];
                         var rgb = 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
-                        _this.tipEl.style.backgroundColor = rgb;
+                        tipEl.style.backgroundColor = rgb;
 
                         var event = document.createEvent('CustomEvent');
                         //发出自定义事件 传递rgb字符串
-                        event.initCustomEvent('colorSliderChange', true, false, rgb);
-                        _this.colorSliderBoxEl.dispatchEvent(event);
+                        event.initCustomEvent('mainColorSliderChange', true, false, color);
+                        colorSliderBoxEl.dispatchEvent(event);
                 });
 
-                _this.El = _this.colorSliderBoxEl;
+                _this.El = colorSliderBoxEl; //暴露节点
 
                 return _this;
         }
 
-        return ColorSlider;
-}(_Slider3.default);
+        return MainColorSlider;
+}(_Slider4.default);
+
+var SubColorSlider = function (_Slider2) {
+        _inherits(SubColorSlider, _Slider2);
+
+        function SubColorSlider(_ref2) {
+                var _ref2$height = _ref2.height,
+                    height = _ref2$height === undefined ? 30 : _ref2$height;
+
+                _classCallCheck(this, SubColorSlider);
+
+                var _this2 = _possibleConstructorReturn(this, (SubColorSlider.__proto__ || Object.getPrototypeOf(SubColorSlider)).call(this));
+
+                _this2.showTimer = null;
+                _this2.color = [0, 0, 0];
+
+                _this2.sliderBoxEl.classList.add(_index2.default.sliderBox);
+
+                //当前颜色标识
+                var tipEl = document.createElement('div');
+                tipEl.className = _index2.default.tip;
+
+                _this2.sliderEl.classList.add(_index2.default.slider);
+                _this2.sliderEl.appendChild(tipEl);
+                _this2.sliderEl.style.left = '50%';
+
+                //定义canvas背景
+                var canvasEl = document.createElement('canvas');
+                canvasEl.width = 100;
+                canvasEl.height = 10;
+                canvasEl.className = _index2.default.canvas;
+                var canvasCtx = canvasEl.getContext('2d');
+
+                var colorSliderBoxEl = document.createElement('div');
+                colorSliderBoxEl.className = _index2.default.colorSliderBox;
+                colorSliderBoxEl.classList.add(_index2.default.subColorSliderBox);
+
+                colorSliderBoxEl.style.height = height + 'px';
+
+                colorSliderBoxEl.appendChild(canvasEl);
+                colorSliderBoxEl.appendChild(_this2.sliderBoxEl);
+
+                //绑定事件
+                colorSliderBoxEl.addEventListener('sliderChange', function (e) {
+                        e.stopPropagation();
+                        //计算color值
+                        var color = _this2.color;
+                        if (e.detail > 0.5) {
+                                var prop = (e.detail - 0.5) * 2;
+                                color = [_this2.color[0] * (1 - prop) + 255 * prop, _this2.color[1] * (1 - prop) + 255 * prop, _this2.color[2] * (1 - prop) + 255 * prop];
+                        } else if (e.detail < 0.5) {
+                                var _prop = 1 - (0.5 - e.detail) * 2;
+                                color = [_this2.color[0] * _prop, _this2.color[1] * _prop, _this2.color[2] * _prop];
+                        } else if (e.detail === 0.5) {
+                                color = _this2.color;
+                        }
+                        _this2.colorChange(color);
+                        _this2.show();
+                        var rgb = 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
+                        var event = document.createEvent('CustomEvent');
+                        //发出自定义事件 传递rgb字符串
+                        event.initCustomEvent('colorSliderChange', true, false, rgb);
+                        colorSliderBoxEl.dispatchEvent(event);
+                });
+
+                _this2.El = colorSliderBoxEl; //暴露节点
+                _this2.tipEl = tipEl; //暴露tip颜色标识
+                _this2.canvasCtx = canvasCtx; //暴露canvasCtx 以便重绘
+                _this2.subCanvasRender(_this2.color); //初始化颜色
+
+
+                return _this2;
+        }
+
+        _createClass(SubColorSlider, [{
+                key: 'colorChange',
+                value: function colorChange(color) {
+                        //
+                        var rgb = 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
+                        this.tipEl.style.backgroundColor = rgb;
+                }
+        }, {
+                key: 'subCanvasRender',
+                value: function subCanvasRender(color) {
+                        this.color = color;
+                        this.colorChange(color);
+                        this.sliderEl.style.left = '50%';
+
+                        var ctx = this.canvasCtx;
+                        ctx.save();
+
+                        var lineargradient = ctx.createLinearGradient(0, 0, 100, 0);
+                        lineargradient.addColorStop(0, 'rgb(0,0,0)');
+                        lineargradient.addColorStop(0.5, 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')');
+                        lineargradient.addColorStop(1, 'rgb(255,255,255)');
+
+                        ctx.fillStyle = lineargradient;
+                        ctx.fillRect(0, 0, 100, 10);
+                        ctx.restore();
+                }
+        }, {
+                key: 'show',
+                value: function show() {
+                        var _this3 = this;
+
+                        clearInterval(this.showTimer);
+                        this.El.classList.add(_index2.default.subColorSliderBoxActive);
+                        this.showTimer = setTimeout(function () {
+                                _this3.El.classList.remove(_index2.default.subColorSliderBoxActive);
+                        }, 2000);
+                }
+        }]);
+
+        return SubColorSlider;
+}(_Slider4.default);
+
+var ColorSlider = function ColorSlider(_ref3) {
+        var height = _ref3.height;
+
+        _classCallCheck(this, ColorSlider);
+
+        var colorSliderContainer = document.createElement('div');
+        colorSliderContainer.className = _index2.default.colorSliderContainer;
+        var mainColorSlider = new MainColorSlider({ height: height });
+        var subColorSlider = new SubColorSlider({ height: height });
+
+        colorSliderContainer.appendChild(mainColorSlider.El);
+        colorSliderContainer.appendChild(subColorSlider.El);
+
+        colorSliderContainer.addEventListener('mainColorSliderChange', function (e) {
+                e.stopPropagation();
+                var color = e.detail;
+                var rgb = 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
+
+                var event = document.createEvent('CustomEvent');
+                //发出自定义事件 传递rgb字符串
+                event.initCustomEvent('colorSliderChange', true, false, rgb);
+                colorSliderContainer.dispatchEvent(event);
+
+                subColorSlider.subCanvasRender(color); //mainColor变化后重绘subColor
+                subColorSlider.show();
+        });
+
+        this.El = colorSliderContainer;
+};
 
 module.exports = ColorSlider;
 
@@ -1844,15 +1991,18 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, ".colorSliderBox-wJJm {\n  position: relative;\n}\n.colorSliderBox-wJJm .canvas3x7Tq {\n  width: 100%;\n  height: 100%;\n  border-radius: 10px;\n  box-sizing: border-box;\n  padding: 0 8px;\n}\n.colorSliderBox-wJJm .sliderBox3Uuh6 {\n  position: absolute;\n  top: 0;\n  left: 8px;\n  right: 8px;\n  height: 100%;\n}\n.colorSliderBox-wJJm .sliderBox3Uuh6 .slider2fJcr {\n  width: 16px;\n  height: 100%;\n  background-color: white;\n  box-sizing: border-box;\n  border-radius: 4px;\n  border: 1px solid #cecece;\n  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.3);\n}\n.colorSliderBox-wJJm .sliderBox3Uuh6 .slider2fJcr .tip2jGKE {\n  position: absolute;\n  width: 2px;\n  height: 50%;\n  top: 50%;\n  left: 50%;\n  transform: translateX(-50%) translateY(-50%);\n  background-color: black;\n}\n", ""]);
+exports.push([module.i, ".colorSliderContainer1XjyG {\n  position: relative;\n}\n.colorSliderContainer1XjyG .colorSliderBox-wJJm {\n  position: relative;\n}\n.colorSliderContainer1XjyG .colorSliderBox-wJJm .canvas3x7Tq {\n  width: 100%;\n  height: 100%;\n  border-radius: 10px;\n  box-sizing: border-box;\n  padding: 0 8px;\n}\n.colorSliderContainer1XjyG .colorSliderBox-wJJm .sliderBox3Uuh6 {\n  position: absolute;\n  top: 0;\n  left: 8px;\n  right: 8px;\n  height: 100%;\n}\n.colorSliderContainer1XjyG .colorSliderBox-wJJm .sliderBox3Uuh6 .slider2fJcr {\n  width: 16px;\n  height: 100%;\n  background-color: white;\n  box-sizing: border-box;\n  border-radius: 4px;\n  border: 1px solid #cecece;\n  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.3);\n}\n.colorSliderContainer1XjyG .colorSliderBox-wJJm .sliderBox3Uuh6 .slider2fJcr .tip2jGKE {\n  position: absolute;\n  width: 2px;\n  height: 50%;\n  top: 50%;\n  left: 50%;\n  transform: translateX(-50%) translateY(-50%);\n  background-color: black;\n}\n.colorSliderContainer1XjyG .subColorSliderBox3nhSp {\n  visibility: hidden;\n  position: absolute;\n  top: 104%;\n  left: 50%;\n  width: 60%;\n  transform: translateX(-50%);\n  opacity: 0;\n  transition: all .5s ease;\n}\n.colorSliderContainer1XjyG .subColorSliderBoxActive2QH-1 {\n  opacity: 1;\n  visibility: visible;\n}\n", ""]);
 
 // exports
 exports.locals = {
+	"colorSliderContainer": "colorSliderContainer1XjyG",
 	"colorSliderBox": "colorSliderBox-wJJm",
 	"canvas": "canvas3x7Tq",
 	"sliderBox": "sliderBox3Uuh6",
 	"slider": "slider2fJcr",
-	"tip": "tip2jGKE"
+	"tip": "tip2jGKE",
+	"subColorSliderBox": "subColorSliderBox3nhSp",
+	"subColorSliderBoxActive": "subColorSliderBoxActive2QH-1"
 };
 
 /***/ }),

@@ -17,7 +17,7 @@ const Sketchpad=require('c-sketchpad');
 
 src
 ```html
-<script src="/docs/sketchpad.js"></script>
+<script src="/docs/sketchpad.min.js"></script>
 ```
 
 init
@@ -36,11 +36,11 @@ const sketchpad = new Sketchpad({
 ```js
 el: '#demo',                    //dom node or string that can be recognized by document.querySelector
 
-toolBtnSize: 40,                //tool button size
+toolBtnSize: 40                 //tool button size
 
-height: 400,                    //Canvas drawing area height
+height: 400                     //Canvas drawing area height
 
-toolList: ['Brush','Eraser'],   //tool array： Brush Eraser Line Polygon
+toolList: ['Brush','Eraser']    //tool array： Brush Eraser Line Polygon
 
 saveBtn: true                   //display the save picture button
 
@@ -76,7 +76,7 @@ class CustomTool {
         frontCanvasCtx,//Pre-canvas getContext('2d') rendering context
         
         //The confirmed drawing element will be drawn in the main canvas layer. The undo function is based on this layer.
-        mainCnavasEl,//Main canvcas layer com node
+        mainCnavasEl,//Main canvcas layer dom node
         mainCanvasCtx //Main canvas rendering context
     }) {
 
