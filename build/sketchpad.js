@@ -7,7 +7,7 @@
 		var a = factory();
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(this, function() {
+})(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -212,7 +212,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(14);
+var	fixUrls = __webpack_require__(15);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -225,7 +225,7 @@ module.exports = function(list, options) {
 
 	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
 	// tags it will allow on a page
-	if (!options.singleton) options.singleton = isOldIE();
+	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
 
 	// By default, add <style> tags to the <head> element
 	if (!options.insertInto) options.insertInto = "head";
@@ -534,11 +534,11 @@ function updateLink (link, options, obj) {
 "use strict";
 
 
-var _Slider2 = __webpack_require__(4);
+var _Slider2 = __webpack_require__(5);
 
 var _Slider3 = _interopRequireDefault(_Slider2);
 
-var _index = __webpack_require__(20);
+var _index = __webpack_require__(21);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -596,15 +596,15 @@ module.exports = SizeSlider;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _colorList = __webpack_require__(22);
+var _colorList = __webpack_require__(23);
 
 var _colorList2 = _interopRequireDefault(_colorList);
 
-var _Slider3 = __webpack_require__(4);
+var _Slider3 = __webpack_require__(5);
 
 var _Slider4 = _interopRequireDefault(_Slider3);
 
-var _index = __webpack_require__(23);
+var _index = __webpack_require__(24);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -832,6 +832,28 @@ module.exports = ColorSlider;
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports) {
+
+module.exports = function escape(url) {
+    if (typeof url !== 'string') {
+        return url
+    }
+    // If url is already wrapped in quotes, remove them
+    if (/^['"].*['"]$/.test(url)) {
+        url = url.slice(1, -1);
+    }
+    // Should url be wrapped?
+    // See https://drafts.csswg.org/css-values-3/#urls
+    if (/["'() \t\n]/.test(url)) {
+        return '"' + url.replace(/"/g, '\\"').replace(/\n/g, '\\n') + '"'
+    }
+
+    return url
+}
+
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -839,7 +861,7 @@ module.exports = ColorSlider;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _index = __webpack_require__(18);
+var _index = __webpack_require__(19);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -876,10 +898,7 @@ var Slider = function () {
 
         var sliderMoveFn = this.sliderMove.bind(this); //需要removeEvent 保留函数指针
 
-        this.sliderEl.addEventListener('touchstart', function (e) {
-            e.preventDefault(); //防止触发mouse事件
-            _this.sliderStart(e);
-        });
+        this.sliderEl.addEventListener('touchstart', this.sliderStart.bind(this));
         this.sliderEl.addEventListener('touchmove', sliderMoveFn);
 
         this.sliderEl.addEventListener('mousedown', function (e) {
@@ -895,6 +914,7 @@ var Slider = function () {
     _createClass(Slider, [{
         key: 'sliderStart',
         value: function sliderStart(e) {
+            e.preventDefault();
             var x = void 0;
             if (e.type === 'touchstart') {
                 x = e.touches[0].pageX;
@@ -932,13 +952,13 @@ var Slider = function () {
 module.exports = Slider;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Sketchpad = __webpack_require__(6);
+var _Sketchpad = __webpack_require__(7);
 
 var _Sketchpad2 = _interopRequireDefault(_Sketchpad);
 
@@ -949,7 +969,7 @@ window.Sketchpad = _Sketchpad2.default;
 module.exports = _Sketchpad2.default;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -957,15 +977,15 @@ module.exports = _Sketchpad2.default;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _utils = __webpack_require__(7);
+var _utils = __webpack_require__(8);
 
-var _canvas = __webpack_require__(8);
+var _canvas = __webpack_require__(9);
 
-var _index = __webpack_require__(9);
+var _index = __webpack_require__(10);
 
 var _index2 = _interopRequireDefault(_index);
 
-var _index3 = __webpack_require__(15);
+var _index3 = __webpack_require__(16);
 
 var _index4 = _interopRequireDefault(_index3);
 
@@ -1065,7 +1085,7 @@ var Sketchpad = function () {
             toolList.forEach(function (toolName) {
                 //逐个注册组件
                 try {
-                    _this.registerTool(__webpack_require__(16)("./" + toolName + '/index.js'));
+                    _this.registerTool(__webpack_require__(17)("./" + toolName + '/index.js'));
                 } catch (error) {
                     console.log(error);
                     throw new Error('\u6CE8\u518C\u7EC4\u4EF6' + toolName + '\u51FA\u9519');
@@ -1373,7 +1393,7 @@ var Sketchpad = function () {
 module.exports = Sketchpad;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1406,7 +1426,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1431,13 +1451,13 @@ module.exports = {
 };
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(10);
+var content = __webpack_require__(11);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1462,15 +1482,16 @@ if(false) {
 }
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+var escape = __webpack_require__(4);
+exports = module.exports = __webpack_require__(0)(false);
 // imports
 
 
 // module
-exports.push([module.i, ".containerbUR-5 .btnContainer {\n  padding: 10px 5px;\n  display: flex;\n}\n.containerbUR-5 .btnContainer > * {\n  border-radius: 4px;\n  background-color: white;\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: 90% 90%;\n  border: 1px solid #d6d6d6;\n  box-sizing: border-box;\n}\n.containerbUR-5 .btnContainer > * + * {\n  margin-left: 5px;\n}\n.containerbUR-5 .btnContainer .active {\n  border: 1px solid black;\n}\n.containerbUR-5 .optionContainer {\n  box-sizing: border-box;\n  padding: 10px 20px;\n}\n.containerbUR-5 .optionContainer > div {\n  display: none;\n}\n.containerbUR-5 .optionContainer .active {\n  display: block;\n}\n.containerbUR-5 .functionContainer {\n  text-align: right;\n  line-height: 1px;\n}\n.containerbUR-5 .functionContainer > div {\n  width: 30px;\n  height: 30px;\n  background-size: 20px 20px;\n  background-position: center ;\n  background-repeat: no-repeat;\n  cursor: pointer;\n}\n.containerbUR-5 .functionContainer .save {\n  display: none;\n  background-image: url(" + __webpack_require__(11) + ");\n}\n.containerbUR-5 .functionContainer .recall {\n  display: inline-block;\n  background-image: url(" + __webpack_require__(12) + ");\n  opacity: 1;\n}\n.containerbUR-5 .functionContainer .noRecall {\n  opacity: 0.2;\n}\n.containerbUR-5 .noMouse {\n  cursor: none;\n}\n.containerbUR-5 .canvasContainer {\n  overflow: hidden;\n  position: relative;\n  background-color: #d8d8d8;\n  background-image: url(" + __webpack_require__(13) + ");\n  box-shadow: 1px 1px 6px 0 #858585;\n}\n.containerbUR-5 .canvasContainer .frontCanvas {\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0;\n  z-index: 2;\n}\n.containerbUR-5 .canvasContainer .mainCanvas {\n  height: 100%;\n  z-index: 1;\n}\n", ""]);
+exports.push([module.i, ".containerbUR-5 .btnContainer {\n  padding: 10px 5px;\n  display: flex;\n}\n.containerbUR-5 .btnContainer > * {\n  border-radius: 4px;\n  background-color: white;\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: 90% 90%;\n  border: 1px solid #d6d6d6;\n  box-sizing: border-box;\n}\n.containerbUR-5 .btnContainer > * + * {\n  margin-left: 5px;\n}\n.containerbUR-5 .btnContainer .active {\n  border: 1px solid black;\n}\n.containerbUR-5 .optionContainer {\n  box-sizing: border-box;\n  padding: 10px 20px;\n}\n.containerbUR-5 .optionContainer > div {\n  display: none;\n}\n.containerbUR-5 .optionContainer .active {\n  display: block;\n}\n.containerbUR-5 .functionContainer {\n  text-align: right;\n  line-height: 1px;\n}\n.containerbUR-5 .functionContainer > div {\n  width: 30px;\n  height: 30px;\n  background-size: 20px 20px;\n  background-position: center ;\n  background-repeat: no-repeat;\n  cursor: pointer;\n}\n.containerbUR-5 .functionContainer .save {\n  display: none;\n  background-image: url(" + escape(__webpack_require__(12)) + ");\n}\n.containerbUR-5 .functionContainer .recall {\n  display: inline-block;\n  background-image: url(" + escape(__webpack_require__(13)) + ");\n  opacity: 1;\n}\n.containerbUR-5 .functionContainer .noRecall {\n  opacity: 0.2;\n}\n.containerbUR-5 .noMouse {\n  cursor: none;\n}\n.containerbUR-5 .canvasContainer {\n  overflow: hidden;\n  position: relative;\n  background-color: #d8d8d8;\n  background-image: url(" + escape(__webpack_require__(14)) + ");\n  box-shadow: 1px 1px 6px 0 #858585;\n}\n.containerbUR-5 .canvasContainer .frontCanvas {\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0;\n  z-index: 2;\n}\n.containerbUR-5 .canvasContainer .mainCanvas {\n  height: 100%;\n  z-index: 1;\n}\n", ""]);
 
 // exports
 exports.locals = {
@@ -1478,25 +1499,25 @@ exports.locals = {
 };
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNTMyMTY3NDQxMDE2IiBjbGFzcz0iaWNvbiIgc3R5bGU9IiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjM3MjYiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PGRlZnM+PHN0eWxlIHR5cGU9InRleHQvY3NzIj48L3N0eWxlPjwvZGVmcz48cGF0aCBkPSJNMzIgMzJsMCA4MjIuODUxYzAgNzUuNDMxIDYxLjcxNiAxMzcuMTQ3IDEzNy4xNDIgMTM3LjE0N2w4MjIuODU2IDAgMC05NTkuOTk4LTk1OS45OTggMHpNNzg2LjI4MiA5MjMuNDI5bC0yNzQuMjgzIDAgMC0xMzcuMTQ3LTEzNy4xNDIgMCAwIDEzNy4xNDctMTM3LjE0MiAwIDAtMjc0LjI4NCA1NDguNTY4IDAgMCAyNzQuMjg0ek04NTQuODUxIDQ0My40MjZjMCAzNC4yODktMzQuMjg0IDY4LjU3My02OC41NjkgNjguNTczbC01NDguNTY4IDBjLTM0LjI4OSAwLTY4LjU3My0zNC4yODQtNjguNTczLTY4LjU3M2wwLTM0Mi44NTIgNjg1LjcwOSAwIDAgMzQyLjg1MnoiIHAtaWQ9IjM3MjciIGZpbGw9IiMyYzJjMmMiPjwvcGF0aD48L3N2Zz4="
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNTMyMTY3MzM5NDYzIiBjbGFzcz0iaWNvbiIgc3R5bGU9IiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjE0NjIiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PGRlZnM+PHN0eWxlIHR5cGU9InRleHQvY3NzIj48L3N0eWxlPjwvZGVmcz48cGF0aCBkPSJNNTA3LjQyNjEzMyAxNTYuNDY3MmMtNC4yNDk2LTAuMTE5NDY3LTguNDEzODY3IDAuMTE5NDY3LTEyLjY0NjQgMC4xMzY1MzNWNTYuNjYxMzMzYzAtMjcuMzkyLTMwLjY1MTczMy00My42MjI0LTUzLjMxNjI2Ni0yOC4yNDUzMzNMODIuNzU2MjY3IDI3Mi4wMjU2YTM0LjEzMzMzMyAzNC4xMzMzMzMgMCAwIDAgMCA1Ni40NzM2bDM1OC43NDEzMzMgMjQzLjU5MjUzM2MyMi42NjQ1MzMgMTUuMzk0MTMzIDUzLjMxNjI2Ny0wLjgzNjI2NyA1My4zMTYyNjctMjguMjQ1MzMzdi0xMDEuMDY4OGMxNzIuODM0MTMzLTIuMDk5MiAzMTYuNTY5NiAxMTguNTQ1MDY3IDMyMy41MTU3MzMgMjc0LjU1MTQ2NyA1LjMyNDggMTE5LjY3MTQ2Ny03MS40MjQgMjI1Ljc1Nzg2Ny0xODUuMjA3NDY3IDI3NC43NTYyNjYtMi4wNjUwNjcgMC44ODc0NjctNC4yMzI1MzMgMi42MjgyNjctNC4wNDQ4IDYuMTc4MTM0IDAuMTUzNiAyLjkwMTMzMyAzLjEwNjEzMyAzLjc1NDY2NyA1LjczNDQgMi45Njk2QzgxNi45MzAxMzMgOTQ3LjY3Nzg2NyA5NTEuMDA1ODY3IDc5MC4zMDYxMzMgOTU2LjA3NDY2NyA2MDAuOTE3MzMzYzYuMzY1ODY3LTIzOC42NjAyNjctMTk0LjQ5MTczMy00MzcuNjQwNTMzLTQ0OC42NDg1MzQtNDQ0LjQ1MDEzM3oiIGZpbGw9IiMyYzJjMmMiIHAtaWQ9IjE0NjMiPjwvcGF0aD48L3N2Zz4="
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMzMiIHdpZHRoPSIzMyI+DQogIDxsaW5lIHgxPSIxNi41IiB4Mj0iMTYuNSIgeTE9IjAiIHkyPSIzMyIgc3Ryb2tlPSJyZ2IoMjQwLDI0MCwyNDApIiBzdHJva2Utd2lkdGg9IjEiLz4NCiAgPGxpbmUgeDE9IjAiIHgyPSIzMyIgeTE9IjE2LjUiIHkyPSIxNi41IiBzdHJva2U9InJnYigyNDAsMjQwLDI0MCkiIHN0cm9rZS13aWR0aD0iMC41Ii8+DQogIDxsaW5lIHgxPSIzMyIgeDI9IjMzIiB5MT0iMCIgeTI9IjMzIiBzdHJva2U9InJnYigyNDAsMjQwLDI0MCkiIHN0cm9rZS13aWR0aD0iMC41Ii8+DQogIDxsaW5lIHgxPSIwIiB4Mj0iMzMiIHkxPSIzMyIgeTI9IjMzIiBzdHJva2U9InJnYigyNDAsMjQwLDI0MCkiIHN0cm9rZS13aWR0aD0iMC41Ii8+DQo8L3N2Zz4NCg=="
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 
@@ -1591,20 +1612,20 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"btnContainer\"></div>\r\n<div class=\"optionContainer\"></div>\r\n<div class=\"functionContainer\">\r\n    <div class=\"recall noRecall\"></div>\r\n    <div class=\"save\"></div>\r\n</div>\r\n<div class=\"canvasContainer\">\r\n    <canvas class=\"frontCanvas\"></canvas>\r\n    <canvas class=\"mainCanvas\"></canvas>\r\n</div>";
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./Brush/index.js": 17,
-	"./Eraser/index.js": 29,
-	"./Line/index.js": 34,
-	"./Polygon/index.js": 39
+	"./Brush/index.js": 18,
+	"./Eraser/index.js": 30,
+	"./Line/index.js": 35,
+	"./Polygon/index.js": 40
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -1620,10 +1641,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 16;
+webpackContext.id = 17;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1639,11 +1660,11 @@ var _ColorSlider = __webpack_require__(3);
 
 var _ColorSlider2 = _interopRequireDefault(_ColorSlider);
 
-var _index = __webpack_require__(25);
+var _index = __webpack_require__(26);
 
 var _index2 = _interopRequireDefault(_index);
 
-var _index3 = __webpack_require__(27);
+var _index3 = __webpack_require__(28);
 
 var _index4 = _interopRequireDefault(_index3);
 
@@ -1680,7 +1701,7 @@ var Brush = function () {
 
         //暴露btn
         this.btnEl = document.createElement('button');
-        this.btnEl.style.backgroundImage = 'url(' + __webpack_require__(28) + ')';
+        this.btnEl.style.backgroundImage = 'url(' + __webpack_require__(29) + ')';
 
         //暴露option
         this.optionEl = document.createElement('div');
@@ -1822,13 +1843,13 @@ var Brush = function () {
 module.exports = Brush;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(19);
+var content = __webpack_require__(20);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1853,10 +1874,10 @@ if(false) {
 }
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(0)(false);
 // imports
 
 
@@ -1870,13 +1891,13 @@ exports.locals = {
 };
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(21);
+var content = __webpack_require__(22);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1901,10 +1922,10 @@ if(false) {
 }
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(0)(false);
 // imports
 
 
@@ -1919,7 +1940,7 @@ exports.locals = {
 };
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1952,13 +1973,13 @@ for (var _i6 = 0; _i6 < 256; _i6++) {
 module.exports = arr;
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(24);
+var content = __webpack_require__(25);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1983,10 +2004,10 @@ if(false) {
 }
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(0)(false);
 // imports
 
 
@@ -2006,13 +2027,13 @@ exports.locals = {
 };
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(26);
+var content = __webpack_require__(27);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2037,10 +2058,10 @@ if(false) {
 }
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(0)(false);
 // imports
 
 
@@ -2053,19 +2074,19 @@ exports.locals = {
 };
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"sizeOption\">\r\n    <div class=\"tipBox\">\r\n        <div class=\"tip\"></div>\r\n    </div>\r\n    <div class=\"sizeSliderBox\"></div>\r\n</div>\r\n<div class=\"colorOption\">\r\n    \r\n</div>";
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNTMyNDQwNTIwMTgxIiBjbGFzcz0iaWNvbiIgc3R5bGU9IiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjE2NjciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PGRlZnM+PHN0eWxlIHR5cGU9InRleHQvY3NzIj48L3N0eWxlPjwvZGVmcz48cGF0aCBkPSJNMzU4LjY4MSA1ODYuMzg2cy05MC45NjggNDkuNC05NC40ODggMTI2LjgyN2MtMy41MTkgNzcuNDI4LTc3LjQyNyAxMzMuNzQtMTAyLjA2MyAxNDAuNzc4czM2MC4xNTcgMjIuOTcxIDMzMi4wMDItMTQyLjQ0NGwtMTM1LjQ1LTEyNS4xNnpNNTI3Ljc4IDYzOC45NDZjMTQuMDE2IDEzLjYwMSAxNy41NjUgMzIuNjc1IDcuOTI5IDQyLjYwNi05LjYzNSA5LjkzLTI4LjgxIDYuOTU0LTQyLjgyMy02LjY0N2wtOTIuNzY3LTg4LjUxOGMtMTQuMDE1LTEzLjYtMTcuNTY1LTMyLjY3NS03LjkyOS00Mi42MDUgOS42MzYtOS45MyAyOC44MS02Ljk1NSA0Mi44MjQgNi42NDZsOTIuNzY2IDg4LjUxOHpNODQ5LjUxNCAxNzMuODYzYy0yNS4xNDQtMTcuMDU1LTQ3Ljc0MS0xLjc2My01Ny40NzcgMy44MDUtMjkuMDk3IDE5LjQ4NS0yMzcuMjQzIDIyMS43Ny0zMjcuNjkgMzE1LjE5NC0xMS4xMDUgMTQuOC0xOC41OSAyNi4yOTQgMzQuNjYzIDc5LjU0NiA0NC45NSA0NC45NSA2NS44OTYgNDIuMDEyIDg4LjY2IDIyLjYwMyAzNy45MDYtMzcuOTA2IDE5OS4yOTktMjYyLjkyNiAyNTguOTItMzQ4LjcxMyA5Ljc5Mi0xNC4wOTIgMjkuODUxLTU0LjE3IDIuOTI0LTcyLjQzNXoiIGZpbGw9IiMzMzMzMzMiIHAtaWQ9IjE2NjgiPjwvcGF0aD48L3N2Zz4="
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2077,11 +2098,11 @@ var _SizeSlider = __webpack_require__(2);
 
 var _SizeSlider2 = _interopRequireDefault(_SizeSlider);
 
-var _index = __webpack_require__(30);
+var _index = __webpack_require__(31);
 
 var _index2 = _interopRequireDefault(_index);
 
-var _index3 = __webpack_require__(32);
+var _index3 = __webpack_require__(33);
 
 var _index4 = _interopRequireDefault(_index3);
 
@@ -2113,7 +2134,7 @@ var Eraser = function () {
 
 
         this.btnEl = document.createElement('button');
-        this.btnEl.style.backgroundImage = 'url(\'' + __webpack_require__(33) + '\')';
+        this.btnEl.style.backgroundImage = 'url(\'' + __webpack_require__(34) + '\')';
 
         this.optionEl = document.createElement('div');
         this.optionEl.innerHTML = _index4.default;
@@ -2242,13 +2263,13 @@ var Eraser = function () {
 module.exports = Eraser;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(31);
+var content = __webpack_require__(32);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2273,10 +2294,10 @@ if(false) {
 }
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(0)(false);
 // imports
 
 
@@ -2289,19 +2310,19 @@ exports.locals = {
 };
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"sizeOption\">\r\n    <div class=\"tipBox\">\r\n        <div class=\"tip\"></div>\r\n    </div>\r\n    <div class=\"sizeSliderBox\"></div>\r\n</div>";
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNTMyNDQwNTkxODk5IiBjbGFzcz0iaWNvbiIgc3R5bGU9IiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjIxNDYiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PGRlZnM+PHN0eWxlIHR5cGU9InRleHQvY3NzIj48L3N0eWxlPjwvZGVmcz48cGF0aCBkPSJNOTE3LjcgOTI0LjRINDQ0LjhjLTEzLjggMC0yNS0xMS4yLTI1LTI1czExLjItMjUgMjUtMjVoNDcyLjljMTMuOCAwIDI1IDExLjIgMjUgMjVzLTExLjIgMjUtMjUgMjV6IiBmaWxsPSIjOTk5OTk5IiBwLWlkPSIyMTQ3Ij48L3BhdGg+PHBhdGggZD0iTTQ0NC4xIDg5OC43TDEyMy44IDU3OC40bDQ0OS41LTQ0OS41IDMyMSAzMjEuMS00NDguOCA0NDguN2MtMC40IDAuNC0xIDAuNC0xLjQgMHoiIGZpbGw9IiNGRkZGRkYiIHAtaWQ9IjIxNDgiPjwvcGF0aD48cGF0aCBkPSJNNDQ0LjggOTI0Yy02LjkgMC0xMy41LTIuNy0xOC40LTcuNmwtMzM4LTMzOEw1NzMuMiA5My41IDkyOS43IDQ1MCA0NjMuMiA5MTYuNGMtNC45IDQuOS0xMS40IDcuNi0xOC40IDcuNnpNMTU5LjEgNTc4LjRsMjg1IDI4NWMwLjQgMC40IDEgMC40IDEuNCAwTDg1OSA0NTAgNTczLjIgMTY0LjIgMTU5LjEgNTc4LjR6IiBmaWxsPSIjNjY2NjY2IiBwLWlkPSIyMTQ5Ij48L3BhdGg+PHBhdGggZD0iTTI0MS44MzMgNDU2LjM3bDM1LjM1NS0zNS4zNTUgMzIwLjUyOCAzMjAuNTI4LTM1LjM1NSAzNS4zNTV6IiBmaWxsPSIjNjY2NjY2IiBwLWlkPSIyMTUwIj48L3BhdGg+PC9zdmc+"
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2317,11 +2338,11 @@ var _ColorSlider = __webpack_require__(3);
 
 var _ColorSlider2 = _interopRequireDefault(_ColorSlider);
 
-var _index = __webpack_require__(35);
+var _index = __webpack_require__(36);
 
 var _index2 = _interopRequireDefault(_index);
 
-var _index3 = __webpack_require__(37);
+var _index3 = __webpack_require__(38);
 
 var _index4 = _interopRequireDefault(_index3);
 
@@ -2356,7 +2377,7 @@ var Brush = function () {
 
         //暴露btn
         this.btnEl = document.createElement('button');
-        this.btnEl.style.backgroundImage = 'url(' + __webpack_require__(38) + ')';
+        this.btnEl.style.backgroundImage = 'url(' + __webpack_require__(39) + ')';
 
         //暴露option
         this.optionEl = document.createElement('div');
@@ -2481,13 +2502,13 @@ var Brush = function () {
 module.exports = Brush;
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(36);
+var content = __webpack_require__(37);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2512,10 +2533,10 @@ if(false) {
 }
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(0)(false);
 // imports
 
 
@@ -2528,19 +2549,19 @@ exports.locals = {
 };
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"sizeOption\">\r\n    <div class=\"tipBox\">\r\n        <div class=\"tip\"></div>\r\n    </div>\r\n    <div class=\"sizeSliderBox\"></div>\r\n</div>\r\n<div class=\"colorOption\">\r\n    \r\n</div>";
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNTMyNDQwNjE3MDUxIiBjbGFzcz0iaWNvbiIgc3R5bGU9IiIgdmlld0JveD0iMCAwIDEwMjUgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjI0OTciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwLjE5NTMxMjUiIGhlaWdodD0iMjAwIj48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPjwvc3R5bGU+PC9kZWZzPjxwYXRoIGQ9Ik05MzAuMjYzIDYxLjk4MWwzMS43NTYgMzEuNzU2LTg2OC4yNzIgODY4LjI3Mi0zMS43NTYtMzEuNzU2IDg2OC4yNzItODY4LjI3MnoiIHAtaWQ9IjI0OTgiPjwvcGF0aD48L3N2Zz4="
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2548,7 +2569,7 @@ module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFs
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _NumSlider = __webpack_require__(40);
+var _NumSlider = __webpack_require__(41);
 
 var _NumSlider2 = _interopRequireDefault(_NumSlider);
 
@@ -2560,11 +2581,11 @@ var _ColorSlider = __webpack_require__(3);
 
 var _ColorSlider2 = _interopRequireDefault(_ColorSlider);
 
-var _index = __webpack_require__(46);
+var _index = __webpack_require__(47);
 
 var _index2 = _interopRequireDefault(_index);
 
-var _index3 = __webpack_require__(48);
+var _index3 = __webpack_require__(49);
 
 var _index4 = _interopRequireDefault(_index3);
 
@@ -2601,7 +2622,7 @@ var Polygon = function () {
 
         //暴露btn
         this.btnEl = document.createElement('button');
-        this.btnEl.style.backgroundImage = 'url(' + __webpack_require__(49) + ')';
+        this.btnEl.style.backgroundImage = 'url(' + __webpack_require__(50) + ')';
 
         //暴露option
         this.optionEl = document.createElement('div');
@@ -2802,7 +2823,7 @@ var Polygon = function () {
 module.exports = Polygon;
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2814,11 +2835,11 @@ var _SizeSlider2 = __webpack_require__(2);
 
 var _SizeSlider3 = _interopRequireDefault(_SizeSlider2);
 
-var _index = __webpack_require__(41);
+var _index = __webpack_require__(42);
 
 var _index2 = _interopRequireDefault(_index);
 
-var _index3 = __webpack_require__(45);
+var _index3 = __webpack_require__(46);
 
 var _index4 = _interopRequireDefault(_index3);
 
@@ -2901,13 +2922,13 @@ var NumSlider = function (_SizeSlider) {
 module.exports = NumSlider;
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(42);
+var content = __webpack_require__(43);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2932,15 +2953,16 @@ if(false) {
 }
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+var escape = __webpack_require__(4);
+exports = module.exports = __webpack_require__(0)(false);
 // imports
 
 
 // module
-exports.push([module.i, ".numSliderBox3Uhwk {\n  width: 100%;\n  display: flex;\n  align-items: center;\n}\n.numSliderBox3Uhwk .sizeSliderBox {\n  flex: 1 1;\n  margin: 0 10px;\n}\n.numSliderBox3Uhwk > button {\n  flex: 0 0 30px;\n  padding: 0;\n  margin: 0;\n  width: 30px;\n  height: 30px;\n  color: #747474;\n  border: none;\n  background-color: white;\n  border-radius: 50%;\n  background-position: center;\n  background-size: 80% 80%;\n  background-repeat: no-repeat;\n}\n.numSliderBox3Uhwk .subtract {\n  background-image: url(" + __webpack_require__(43) + ");\n}\n.numSliderBox3Uhwk .add {\n  background-image: url(" + __webpack_require__(44) + ");\n}\n", ""]);
+exports.push([module.i, ".numSliderBox3Uhwk {\n  width: 100%;\n  display: flex;\n  align-items: center;\n}\n.numSliderBox3Uhwk .sizeSliderBox {\n  flex: 1 1;\n  margin: 0 10px;\n}\n.numSliderBox3Uhwk > button {\n  flex: 0 0 30px;\n  padding: 0;\n  margin: 0;\n  width: 30px;\n  height: 30px;\n  color: #747474;\n  border: none;\n  background-color: white;\n  border-radius: 50%;\n  background-position: center;\n  background-size: 80% 80%;\n  background-repeat: no-repeat;\n}\n.numSliderBox3Uhwk .subtract {\n  background-image: url(" + escape(__webpack_require__(44)) + ");\n}\n.numSliderBox3Uhwk .add {\n  background-image: url(" + escape(__webpack_require__(45)) + ");\n}\n", ""]);
 
 // exports
 exports.locals = {
@@ -2948,31 +2970,31 @@ exports.locals = {
 };
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNTMyNTk4MzU3NDMzIiBjbGFzcz0iaWNvbiIgc3R5bGU9IiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9Ijk0OCIgZGF0YS1zcG0tYW5jaG9yLWlkPSJhMzEzeC43NzgxMDY5LjAuaTAiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PGRlZnM+PHN0eWxlIHR5cGU9InRleHQvY3NzIj48L3N0eWxlPjwvZGVmcz48cGF0aCBkPSJNOTM3LjEyODk2IDg5My41MTE2OGMtMi43ODUyOCA1NS4xOTg3Mi03MC42NjExMiA0My4zMzA1Ni0xMDguNDAwNjQgNDMuMzMwNTZIMTgxLjEyYy0zNS43NDc4NCAwLTgzLjYyNDk2IDQuMzM2NjQtODMuNjI0OTYtNDYuOTc2di0xMjguNzAxNDQtNDc2LjA5ODU2LTEzOC4xMTcxMmMwLTQ5LjEzNjY0IDQwLjIwNzM2LTQ5Ljc1NjE2IDc2LjUzMzc2LTQ5Ljc1NjE2SDgxOS4zNzQwOGMzNC4zNjAzMiAwIDkyLjA2Nzg0LTEwLjk0MTQ0IDExMi45MzE4NCAyMy4zOTg0IDYuODE0NzIgMTEuMjE3OTIgNC44MjMwNCAyOC4wNzgwOCA0LjgyMzA0IDQwLjgzNzEyVjg5My41MTE2OGMwIDMzLjAxMzc2IDUxLjIgMzMuMDEzNzYgNTEuMiAwVjE1OS42MzY0OGMwLTE1Ljg5MjQ4IDAuMDI1Ni0zMC43MDQ2NC00LjAxNDA4LTQ2LjQwNzY4LTEwLjUzNjk2LTQwLjk3NTM2LTUyLjA2NTI4LTY3LjIzMDcyLTkyLjczMzQ0LTY3LjIzMDcySDE0OS41MTkzNmMtNjEuMDUwODggMC0xMDMuMjE5MiA0Mi4xNjgzMi0xMDMuMjE5MiAxMDMuMjE5MnY3NDIuMDc3NDRjMCA0My44NTI4IDI2Ljg4NTEyIDc3Ljk3MjQ4IDY3LjIzMDcyIDkyLjczMzQ0IDE0LjM0NjI0IDUuMjUzMTIgMzEuMjQ3MzYgNC4wMTQwOCA0Ni40MDc2OCA0LjAxNDA4SDg5My43OTg0YzUzLjMwOTQ0IDAgOTEuOTM5ODQtNDMuMjQ4NjQgOTQuNTMwNTYtOTQuNTMwNTYgMS42NjQtMzMuMDE4ODgtNDkuNTQxMTItMzIuODU1MDQtNTEuMiAweiIgcC1pZD0iOTQ5IiBmaWxsPSIjNzA3MDcwIj48L3BhdGg+PHBhdGggZD0iTTIzMC41OTQ1NiA1NDIuNjEyNDhoNTczLjQzNDg4YzMzLjAxMzc2IDAgMzMuMDEzNzYtNTEuMiAwLTUxLjJIMjMwLjU5NDU2Yy0zMy4wMTg4OCAwLTMzLjAxODg4IDUxLjIgMCA1MS4yeiIgcC1pZD0iOTUwIiBmaWxsPSIjNzA3MDcwIj48L3BhdGg+PC9zdmc+"
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNTMyNTk4MzczMjEzIiBjbGFzcz0iaWNvbiIgc3R5bGU9IiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjE0MTQiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PGRlZnM+PHN0eWxlIHR5cGU9InRleHQvY3NzIj48L3N0eWxlPjwvZGVmcz48cGF0aCBkPSJNOTYzLjk0MjQgNTIwLjE4MTc2Yy0xLjc5NzEyIDIzOC4zMjA2NC0xOTIuNDc2MTYgNDM2LjI4MDMyLTQzMS4wNDI1NiA0NDUuMjMwMDgtMjM3Ljc4ODE2IDguOTI0MTYtNDQzLjA2OTQ0LTE4MC42MTgyNC00NTkuMDE4MjQtNDE2LjU0MjcyQzU3Ljg1NiAzMTEuODM4NzIgMjM5Ljg5MjQ4IDk5LjYzNTIgNDc1LjU5MTY4IDc2LjU5MDA4YzIzNi4wNTI0OC0yMy4wNzU4NCA0NTQuODI0OTYgMTUxLjQyNCA0ODQuOTM1NjggMzg2LjYxMTIgMi40MTY2NCAxOC44ODI1NiAzLjI2MTQ0IDM3LjkyODk2IDMuNDE1MDQgNTYuOTgwNDggMC4yNDA2NCAzMi45OTg0IDUxLjQ1MDg4IDMzLjAxODg4IDUxLjIgMC0xLjc2MTI4LTIzNC4xNjMyLTE2OC4yMTc2LTQzOS44Mjg0OC0zOTguMzIwNjQtNDg2LjkxMkMzODYuOTQ5MTItMTMuNzYyNTYgMTQ5LjM0NTI4IDExMy43NjEyOCA1OS43NTU1MiAzMjkuOTY4NjQtMzEuMDM3NDQgNTQ5LjA5NDQgNDkuODI3ODQgODAyLjkxODQgMjQ0Ljk3MTUyIDkzNC43NTg0YzE5NS43ODM2OCAxMzIuMjcwMDggNDY1LjQwOCA5OC4xNzA4OCA2MjkuNDA2NzItNjguMTYyNTYgOTAuNTM2OTYtOTEuODM3NDQgMTM5Ljc5NjQ4LTIxOC4wODEyOCAxNDAuNzU5MDQtMzQ2LjQxNDA4IDAuMjQwNjQtMzMuMDY0OTYtNTAuOTU5MzYtMzMuMDQ0NDgtNTEuMTk0ODggMHoiIHAtaWQ9IjE0MTUiIGZpbGw9IiM3MDcwNzAiPjwvcGF0aD48cGF0aCBkPSJNMjM5LjQyMTQ0IDU0NS43NjEyOGg1NTguMTA1NmMzMy4wMTM3NiAwIDMzLjAxMzc2LTUxLjIzNTg0IDAtNTEuMjM1ODRIMjM5LjQyMTQ0Yy0zMy4wMTg4OCAwLTMzLjAxODg4IDUxLjIzNTg0IDAgNTEuMjM1ODR6IiBwLWlkPSIxNDE2IiBmaWxsPSIjNzA3MDcwIj48L3BhdGg+PHBhdGggZD0iTTU0NC4xMDI0IDc5OS4yMDEyOFYyNDEuMDkwNTZjMC0zMy4wMTg4OC01MS4yMzA3Mi0zMy4wMTg4OC01MS4yMzA3MiAwdjU1OC4xMTA3MmMtMC4wMDUxMiAzMy4wMTM3NiA1MS4yMzA3MiAzMy4wMTM3NiA1MS4yMzA3MiAweiIgcC1pZD0iMTQxNyIgZmlsbD0iIzcwNzA3MCI+PC9wYXRoPjwvc3ZnPg=="
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports) {
 
 module.exports = "<button class=\"subtract\"></button>\r\n<div class=\"sizeSliderBox\"></div>\r\n<button class=\"add\"></button>";
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(47);
+var content = __webpack_require__(48);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2997,10 +3019,10 @@ if(false) {
 }
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(0)(false);
 // imports
 
 
@@ -3013,13 +3035,13 @@ exports.locals = {
 };
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"sideOption\">\r\n    <canvas width=\"80\" height=\"80\" class=\"tipCanvas\"></canvas>\r\n    <div class=\"numSliderBox\"></div>\r\n</div>\r\n\r\n<div class=\"sizeOption\">\r\n    <div class=\"tipBox\">\r\n        <div class=\"tip\"></div>\r\n    </div>\r\n    <div class=\"sizeSliderBox\"></div>\r\n</div>\r\n<div class=\"colorOption\">\r\n\r\n</div>";
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNTMyNTA3ODk3MTIyIiBjbGFzcz0iaWNvbiIgc3R5bGU9IiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjE3NTQiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PGRlZnM+PHN0eWxlIHR5cGU9InRleHQvY3NzIj48L3N0eWxlPjwvZGVmcz48cGF0aCBkPSJNOTU5Ljg4NjI4NSA0MzAuMjM2ODExYzAtNDUuMjEyNzM4LTM2LjY1MTc1OC04MS44NjQ0OTYtODEuODY0NDk2LTgxLjg2NDQ5NWE4MS43MzE0NjYgODEuNzMxNDY2IDAgMCAwLTI1LjcyNTkxOCA0LjE0ODQ4M0w1OTMuNTU5MDM5IDE2Ni4yODUyMTFjMC4xODYyNDItMi4yNTIyOTcgMC4zMDQ5NDUtNC41MjMwMTMgMC4zMDQ5NDUtNi44MjM0MDYgMC00NS4yMTI3MzgtMzYuNjUxNzU4LTgxLjg2MzQ3My04MS44NjM0NzItODEuODYzNDczLTQ1LjIxMzc2MSAwLTgxLjg2NTUxOSAzNi42NTA3MzUtODEuODY1NTIgODEuODYzNDczIDAgMS43NDE2NjcgMC4wNzI2NTUgMy40NjQ5MTUgMC4xODAxMDIgNS4xNzg5NTNMMTc2LjAwODE1NCAzNTQuMDgyMzY0YTgxLjYwMjUyOSA4MS42MDI1MjkgMCAwIDAtMzAuMDMxOTktNS43MTEwNzJjLTQ1LjIxMzc2MSAwLTgxLjg2NDQ5NiAzNi42NTI3ODEtODEuODY0NDk2IDgxLjg2NDQ5NiAwIDM3LjkzNDk4NCAyNS44MDU3MzYgNjkuODMxNDM4IDYwLjgxODE1OCA3OS4xMTk5ODlsOTYuNjI3NzM0IDI5MS41NDgxMjJjLTE4LjUyNTkzNSAxNS4wMDc4MDktMzAuMzc4ODkxIDM3LjkzMDg5MS0zMC4zNzg4OTEgNjMuNjMyMjQ5IDAgNDUuMjEyNzM4IDM2LjY1MDczNSA4MS44NjQ0OTYgODEuODY0NDk2IDgxLjg2NDQ5NiAyOS4wMDc2NjEgMCA1NC40NzE2MTItMTUuMTAwOTMgNjkuMDEyNzkzLTM3Ljg1NjE4OWwzMzMuMjczNDMzLTIuNzI4MTM0YzE0LjIwNTUzNyAyNC4yNzA3NzYgNDAuNTMyMTM1IDQwLjU4NDMyNCA3MC42ODQ4NzUgNDAuNTg0MzIzIDQ1LjIxMjczOCAwIDgxLjg2NDQ5Ni0zNi42NTE3NTggODEuODY0NDk2LTgxLjg2NDQ5NiAwLTIyLjA1NjM0Mi04LjczODAxMi00Mi4wNTk5MzEtMjIuOTIxMDM1LTU2Ljc3OTE2N2w5My40NDYyNzUtMjk4LjIxNTk4NmMzNS4zNTIxNTktOS4wNTkzMyA2MS40ODIyODMtNDEuMTI5NzQ2IDYxLjQ4MjI4My03OS4zMDQxODR6IG0tNzgyLjI1MDA1IDc1LjUxMTgxMWMyOS40ODk2MzgtMTIuMzc5OTU4IDUwLjIwNDQyNS00MS41MjQ3NDIgNTAuMjA0NDI1LTc1LjUxMTgxMSAwLTE1LjQ1MDktNC4yODU2MDYtMjkuODk4OTYxLTExLjcyNTA0Mi00Mi4yMjk4bDIzNC4zNTQ1MTUtMTc0LjU3OTEwN2MxNS4wMDM3MTUgMTcuMDkyMjgzIDM2Ljk5ODY1OSAyNy44OTczNzQgNjEuNTMwMzc5IDI3Ljg5NzM3MyAyNC4wOTY4MTQgMCA0NS43NTgxNi0xMC40MTUyMSA2MC43MzgzMzktMjYuOTg1NjA3bDIzNy4wNzAzNyAxNzAuNjM5Mzc4Yy04LjYxOTMwOCAxMi45NjUyOS0xMy42NTE5MjggMjguNTIxNTktMTMuNjUxOTI4IDQ1LjI1Njc0IDAgMzMuODU2MDg2IDIwLjU1NDEyOCA2Mi45MDg3NzIgNDkuODYyNjQxIDc1LjM2OTU3MmwtODcuMTM3NTkyIDI3OC4wODE0MTJhODIuNTUwMTExIDgyLjU1MDExMSAwIDAgMC0xMi44NjYwMjktMS4wMTQwOTZjLTQxLjg5MzEzMiAwLTc2LjQxNDM2NyAzMS40NzU4NzUtODEuMjU5NzIyIDcyLjA2MzI2OWwtMzEwLjE4NTU5OCAyLjUzODgyM2MtMy42Nzc3NjItNDEuODA3MTc1LTM4Ljc2MjgzOS03NC42MDIwOTItODEuNTI1NzgyLTc0LjYwMjA5Mi0xLjIwNjQ3OCAwLTIuNDAyNzIzIDAuMDM4ODg2LTMuNTk2OTIxIDAuMDkxMDc0bC05MS44MTIwNTUtMjc3LjAxNTEyOHoiIHAtaWQ9IjE3NTUiPjwvcGF0aD48L3N2Zz4="

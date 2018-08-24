@@ -23,10 +23,7 @@ class Slider {
 
         const sliderMoveFn = this.sliderMove.bind(this);//需要removeEvent 保留函数指针
 
-        this.sliderEl.addEventListener('touchstart', (e) => {
-            e.preventDefault();//防止触发mouse事件
-            this.sliderStart(e);
-        })
+        this.sliderEl.addEventListener('touchstart',this.sliderStart.bind(this));
         this.sliderEl.addEventListener('touchmove', sliderMoveFn);
 
 
@@ -42,6 +39,7 @@ class Slider {
     }
 
     sliderStart(e) {
+        e.preventDefault();
         let x;
         if (e.type === 'touchstart') {
             x = e.touches[0].pageX;
