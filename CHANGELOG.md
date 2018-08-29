@@ -1,3 +1,11 @@
+# 2.4.2
+
+registerTool函数更名为toolRegister，但保持了registerTool的可用性
+
+修复ie只支持整数rgb的bug
+
+修复ie自定义事件无法重复init引发的bug
+
 # 2.4.1
 
 修复pc端滑块失效问题

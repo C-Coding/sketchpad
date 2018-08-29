@@ -95,6 +95,7 @@ class CustomTool {
     //drawStartFn 对应 touchstart mousedown事件
     //drawMoveFn 对应 touchmove mousemove且drawStartFn触发后才会响应
     //drawEndFn 对应 touchend mouseup且drawStartFn触发后才会响应
+    //由于canvas根据不同设备dpr做了高清适配，请使用封装的canvasX和canvasY作为点击坐标
     drawStartFn(event) {
         const x=event.canvasX;//在event中封装了canvasX 作为点击坐标x轴
         const y=event.canvasY;//在event中封装了canvasY 作为点击坐标y轴
@@ -133,6 +134,6 @@ class CustomTool {
 
 
 const sketchpad = new Sketchpad({options});
-sketchpad.registerTool(CustomTool);
+sketchpad.toolRegister(CustomTool);
 
 ```

@@ -122,6 +122,9 @@ class SubColorSlider extends Slider {
             } else if (e.detail === 0.5) {
                 color = this.color;
             }
+            color=color.map(function(item){
+                return Math.round(item);
+            })
             this.colorChange(color);
             this.show();
             const rgb = `rgb(${color[0]},${color[1]},${color[2]})`;

@@ -738,6 +738,9 @@ var SubColorSlider = function (_Slider2) {
                         } else if (e.detail === 0.5) {
                                 color = _this2.color;
                         }
+                        color = color.map(function (item) {
+                                return Math.round(item);
+                        });
                         _this2.colorChange(color);
                         _this2.show();
                         var rgb = 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
@@ -887,8 +890,6 @@ var Slider = function () {
 
         this.sliderBoxEl.appendChild(this.sliderEl);
 
-        this.sliderChangeEvent = document.createEvent('CustomEvent'); //自定义事件 用于向外暴露滑块当前值 暴露事件名为 SizeSliderChange
-
         this.prevPointX = null; //记录点击时的坐标x
         this.prevOffsetLeft = null; //基佬点击时滑块的初始位置
 
@@ -939,9 +940,11 @@ var Slider = function () {
             if (X > 0 && X < this.sliderBoxEl.clientWidth) {
                 var perc = X / this.sliderBoxEl.clientWidth;
                 this.sliderEl.style.left = perc * 100 + '%';
+
+                var sliderChangeEvent = document.createEvent('CustomEvent');
                 //发出自定义事件 传递滑块当前位置的小数
-                this.sliderChangeEvent.initCustomEvent('sliderChange', true, false, perc);
-                this.sliderBoxEl.dispatchEvent(this.sliderChangeEvent);
+                sliderChangeEvent.initCustomEvent('sliderChange', true, false, perc);
+                this.sliderBoxEl.dispatchEvent(sliderChangeEvent);
             }
         }
     }]);
@@ -979,7 +982,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _utils = __webpack_require__(8);
 
-var _canvas = __webpack_require__(9);
+var _Canvas = __webpack_require__(9);
 
 var _index = __webpack_require__(10);
 
@@ -1108,8 +1111,8 @@ var Sketchpad = function () {
         //注册工具
 
     }, {
-        key: 'registerTool',
-        value: function registerTool(Tool) {
+        key: 'toolRegister',
+        value: function toolRegister(Tool) {
             var _this2 = this;
 
             //注册tool组件 传入一个组件的构造函数
@@ -1128,13 +1131,18 @@ var Sketchpad = function () {
             }); //监听组件的工具按钮点击事件 触发toolChange
 
 
-            this.btnContainerEl.append(tool.btnEl); //将组件的工具按钮节点插入工具按钮容器
-            this.optionContainerEl.append(tool.optionEl); //将工具配置选项节点插入工具选项div容器
+            this.btnContainerEl.appendChild(tool.btnEl); //将组件的工具按钮节点插入工具按钮容器
+            this.optionContainerEl.appendChild(tool.optionEl); //将工具配置选项节点插入工具选项div容器
 
             if (this.currentTool === null) {
                 //如果当前生效tool为空则使用第一个注册的tool 避免构建后无默认选中的tool
                 this.toolChange(tool);
             }
+        }
+    }, {
+        key: 'registerTool',
+        value: function registerTool(Tool) {
+            this.toolRegister(Tool);
         }
         //事件监听初始化 初始化的一部分
 
@@ -1274,8 +1282,8 @@ var Sketchpad = function () {
                 _this4.frontCanvasEl.style.width = _this4.canvasContainerEl.clientWidth + 'px';
                 _this4.mainCanvasEl.style.width = _this4.canvasContainerEl.clientWidth + 'px';
                 //canvas尺寸重置的封装函数 实现了修改canvas大小补清空内容
-                (0, _canvas.canvasResize)(_this4.mainCanvasEl, _this4.mainCanvasCtx, _this4.canvasContainerEl.clientWidth * _this4.dpr);
-                (0, _canvas.canvasResize)(_this4.recallCanvasEl, _this4.recallCanvasCtx, _this4.canvasContainerEl.clientWidth * _this4.dpr);
+                (0, _Canvas.canvasResize)(_this4.mainCanvasEl, _this4.mainCanvasCtx, _this4.canvasContainerEl.clientWidth * _this4.dpr);
+                (0, _Canvas.canvasResize)(_this4.recallCanvasEl, _this4.recallCanvasCtx, _this4.canvasContainerEl.clientWidth * _this4.dpr);
             }, 200);
         }
         //接收一个ctx渲染函数
@@ -2875,16 +2883,15 @@ var NumSlider = function (_SizeSlider) {
         _this.num = range[0]; //当前数值
         _this.range = range;
 
-        _this.numSliderChangeEvent = document.createEvent('CustomEvent');
-
         _this.numSliderBoxEl.addEventListener('sliderChange', function (e) {
             e.stopPropagation();
             var v = (range[1] - range[0]) * e.detail + range[0];
             v = Number(v.toFixed(0));
             if (_this.num !== v) {
                 _this.num = v;
-                _this.numSliderChangeEvent.initCustomEvent('numSliderChange', true, false, _this.num);
-                _this.El.dispatchEvent(_this.numSliderChangeEvent);
+                var numSliderChangeEvent = document.createEvent('CustomEvent');
+                numSliderChangeEvent.initCustomEvent('numSliderChange', true, false, _this.num);
+                _this.El.dispatchEvent(numSliderChangeEvent);
             }
         });
 
@@ -2911,8 +2918,10 @@ var NumSlider = function (_SizeSlider) {
         value: function numChange(v) {
             this.num = v;
             this.sliderEl.style.left = (v - this.range[0]) * 100 / (this.range[1] - this.range[0]) + '%';
-            this.numSliderChangeEvent.initCustomEvent('numSliderChange', true, false, this.num);
-            this.El.dispatchEvent(this.numSliderChangeEvent);
+
+            var numSliderChangeEvent = document.createEvent('CustomEvent');
+            numSliderChangeEvent.initCustomEvent('numSliderChange', true, false, this.num);
+            this.El.dispatchEvent(numSliderChangeEvent);
         }
     }]);
 

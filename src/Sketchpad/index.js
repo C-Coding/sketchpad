@@ -1,5 +1,5 @@
 import { getElementLeft, getElementTop } from '@/utils';
-import { canvasResize } from '@/utils/canvas.js';
+import { canvasResize } from '@/utils/Canvas.js';
 import s from './index.less';
 import html from './index.html';
 
@@ -99,7 +99,7 @@ class Sketchpad {
         // this.containerEl.style.display = 'block';
     }
     //注册工具
-    registerTool(Tool) {//注册tool组件 传入一个组件的构造函数
+    toolRegister(Tool) {//注册tool组件 传入一个组件的构造函数
         const tool = new Tool({
             frontCanvasEl: this.frontCanvasEl,
             frontCanvasCtx: this.frontCanvasCtx,//向组件构造函数暴露frontCanvasCtx
@@ -115,12 +115,15 @@ class Sketchpad {
         })//监听组件的工具按钮点击事件 触发toolChange
 
 
-        this.btnContainerEl.append(tool.btnEl);//将组件的工具按钮节点插入工具按钮容器
-        this.optionContainerEl.append(tool.optionEl);//将工具配置选项节点插入工具选项div容器
+        this.btnContainerEl.appendChild(tool.btnEl);//将组件的工具按钮节点插入工具按钮容器
+        this.optionContainerEl.appendChild(tool.optionEl);//将工具配置选项节点插入工具选项div容器
 
         if (this.currentTool === null) {//如果当前生效tool为空则使用第一个注册的tool 避免构建后无默认选中的tool
             this.toolChange(tool);
         }
+    }
+    registerTool(Tool) {
+        this.toolRegister(Tool)
     }
     //事件监听初始化 初始化的一部分
     eventListenerInit() {

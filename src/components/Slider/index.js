@@ -12,8 +12,6 @@ class Slider {
 
         this.sliderBoxEl.appendChild(this.sliderEl);
 
-        this.sliderChangeEvent = document.createEvent('CustomEvent');//自定义事件 用于向外暴露滑块当前值 暴露事件名为 SizeSliderChange
-
         this.prevPointX = null;//记录点击时的坐标x
         this.prevOffsetLeft = null;//基佬点击时滑块的初始位置
 
@@ -63,9 +61,11 @@ class Slider {
         if (X > 0 && X < this.sliderBoxEl.clientWidth) {
             const perc = X / this.sliderBoxEl.clientWidth
             this.sliderEl.style.left = perc * 100 + '%';
+
+            const sliderChangeEvent = document.createEvent('CustomEvent');
             //发出自定义事件 传递滑块当前位置的小数
-            this.sliderChangeEvent.initCustomEvent('sliderChange', true, false, perc);
-            this.sliderBoxEl.dispatchEvent(this.sliderChangeEvent);
+            sliderChangeEvent.initCustomEvent('sliderChange', true, false, perc);
+            this.sliderBoxEl.dispatchEvent(sliderChangeEvent);
         }
 
     }

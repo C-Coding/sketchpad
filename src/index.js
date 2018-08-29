@@ -2,4 +2,4 @@ import Sketchpad from "./Sketchpad";
 
 window.Sketchpad = Sketchpad;
 
-module.exports=Sketchpad;
+module.exports = Sketchpad;

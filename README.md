@@ -59,7 +59,7 @@ sketchpad.save();               //return the base64 format for drawing the image
 
 sketchpad.clean();              //empty drawn content and all recording
 
-sketchpad.registerTool();       //receive a custom tool constructor
+sketchpad.toolRegister();       //receive a custom tool constructor
 
 ```
 
@@ -96,6 +96,7 @@ class CustomTool {
     //drawStartFn to touchstart mousedown event
     //drawMoveFn to touchmove mousemove  tip: only respond when drawStartFn triggered
     //drawEndFn to touchend mouseup  tip: only respond when drawStartFn triggered
+    //since canvas is HD compatible according to different device DPR, please use canvasX and canvasY as click coordinates.
     drawStartFn(event) {
         const x=event.canvasX;//Encapsulate canvasX as the click coordinate x-axis in the event
         const y=event.canvasY;//Encapsulate canvasY as the click coordinate y axis in the event
@@ -136,5 +137,5 @@ class CustomTool {
 const sketchpad = new Sketchpad({options});
 
 
-sketchpad.registerTool(CustomTool);//use registerTool function
+sketchpad.toolRegister(CustomTool);//use registerTool function
 ```

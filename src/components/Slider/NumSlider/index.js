@@ -22,8 +22,6 @@ class NumSlider extends SizeSlider {
         this.num = range[0];//当前数值
         this.range = range;
 
-        this.numSliderChangeEvent = document.createEvent('CustomEvent');
-
 
         this.numSliderBoxEl.addEventListener('sliderChange', (e) => {
             e.stopPropagation();
@@ -31,8 +29,9 @@ class NumSlider extends SizeSlider {
             v = Number(v.toFixed(0));
             if (this.num !== v) {
                 this.num = v;
-                this.numSliderChangeEvent.initCustomEvent('numSliderChange', true, false, this.num);
-                this.El.dispatchEvent(this.numSliderChangeEvent);
+                const numSliderChangeEvent = document.createEvent('CustomEvent');
+                numSliderChangeEvent.initCustomEvent('numSliderChange', true, false, this.num);
+                this.El.dispatchEvent(numSliderChangeEvent);
             }
         })
 
@@ -57,8 +56,10 @@ class NumSlider extends SizeSlider {
     numChange(v) {
         this.num = v;
         this.sliderEl.style.left = (v - this.range[0]) * 100 / (this.range[1] - this.range[0]) + '%';
-        this.numSliderChangeEvent.initCustomEvent('numSliderChange', true, false, this.num);
-        this.El.dispatchEvent(this.numSliderChangeEvent);
+
+        const numSliderChangeEvent = document.createEvent('CustomEvent');
+        numSliderChangeEvent.initCustomEvent('numSliderChange', true, false, this.num);
+        this.El.dispatchEvent(numSliderChangeEvent);
     }
 
 }
