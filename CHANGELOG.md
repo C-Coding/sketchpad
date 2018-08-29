@@ -1,3 +1,7 @@
+# 2.4.3
+
+修复save()导出base64无效问题
+
 # 2.4.2
 
 registerTool函数更名为toolRegister，但保持了registerTool的可用性

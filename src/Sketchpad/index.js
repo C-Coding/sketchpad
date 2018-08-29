@@ -347,7 +347,7 @@ class Sketchpad {
                 a.dispatchEvent(event);
             }
         } else {//返回base64
-            return this.mainCanvasCtx.toDataURL('image/png');
+            return this.mainCanvasEl.toDataURL('image/png');
         }
 
 

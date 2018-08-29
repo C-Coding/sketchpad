@@ -1377,7 +1377,7 @@ var Sketchpad = function () {
                 }
             } else {
                 //返回base64
-                return this.mainCanvasCtx.toDataURL('image/png');
+                return this.mainCanvasEl.toDataURL('image/png');
             }
         }
         //清空画布同时清空所有撤销记录
