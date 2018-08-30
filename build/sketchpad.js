@@ -629,12 +629,7 @@ var MainColorSlider = function (_Slider) {
 
                 _this.sliderBoxEl.classList.add(_index2.default.sliderBox);
 
-                //当前颜色标识
-                var tipEl = document.createElement('div');
-                tipEl.className = _index2.default.tip;
-
                 _this.sliderEl.classList.add(_index2.default.slider);
-                _this.sliderEl.appendChild(tipEl);
 
                 //定义canvas背景
                 var canvasEl = document.createElement('canvas');
@@ -645,7 +640,7 @@ var MainColorSlider = function (_Slider) {
 
                 var colorSliderBoxEl = document.createElement('div');
                 colorSliderBoxEl.className = _index2.default.colorSliderBox;
-                colorSliderBoxEl.classList.add(_index2.default.mainColorSliderBox);
+                // colorSliderBoxEl.classList.add(s.mainColorSliderBox);
                 colorSliderBoxEl.style.height = height + 'px';
 
                 colorSliderBoxEl.appendChild(canvasEl);
@@ -667,15 +662,12 @@ var MainColorSlider = function (_Slider) {
                 colorSliderBoxEl.addEventListener('sliderChange', function (e) {
                         e.stopPropagation();
                         var color = _colorList2.default[Math.round(_colorList2.default.length * e.detail)];
-                        var rgb = 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
-                        tipEl.style.backgroundColor = rgb;
 
                         var event = document.createEvent('CustomEvent');
                         //发出自定义事件 传递rgb字符串
                         event.initCustomEvent('mainColorSliderChange', true, false, color);
                         colorSliderBoxEl.dispatchEvent(event);
                 });
-
                 _this.El = colorSliderBoxEl; //暴露节点
 
                 return _this;
@@ -700,12 +692,8 @@ var SubColorSlider = function (_Slider2) {
 
                 _this2.sliderBoxEl.classList.add(_index2.default.sliderBox);
 
-                //当前颜色标识
-                var tipEl = document.createElement('div');
-                tipEl.className = _index2.default.tip;
-
                 _this2.sliderEl.classList.add(_index2.default.slider);
-                _this2.sliderEl.appendChild(tipEl);
+
                 _this2.sliderEl.style.left = '50%';
 
                 //定义canvas背景
@@ -727,6 +715,9 @@ var SubColorSlider = function (_Slider2) {
                 //绑定事件
                 colorSliderBoxEl.addEventListener('sliderChange', function (e) {
                         e.stopPropagation();
+
+                        _this2.sliderEl.classList.remove(_index2.default.subSliderAuto);
+
                         //计算color值
                         var color = _this2.color;
                         if (e.detail > 0.5) {
@@ -741,7 +732,7 @@ var SubColorSlider = function (_Slider2) {
                         color = color.map(function (item) {
                                 return Math.round(item);
                         });
-                        _this2.colorChange(color);
+                        // this.colorChange(color);
                         _this2.show();
                         var rgb = 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
                         var event = document.createEvent('CustomEvent');
@@ -751,7 +742,6 @@ var SubColorSlider = function (_Slider2) {
                 });
 
                 _this2.El = colorSliderBoxEl; //暴露节点
-                _this2.tipEl = tipEl; //暴露tip颜色标识
                 _this2.canvasCtx = canvasCtx; //暴露canvasCtx 以便重绘
                 _this2.subCanvasRender(_this2.color); //初始化颜色
 
@@ -762,15 +752,16 @@ var SubColorSlider = function (_Slider2) {
         _createClass(SubColorSlider, [{
                 key: 'colorChange',
                 value: function colorChange(color) {
-                        //
-                        var rgb = 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
-                        this.tipEl.style.backgroundColor = rgb;
+                        // const rgb = `rgb(${color[0]},${color[1]},${color[2]})`;
+                        this.color = color;
                 }
         }, {
                 key: 'subCanvasRender',
                 value: function subCanvasRender(color) {
-                        this.color = color;
                         this.colorChange(color);
+                        // this.color=color;
+                        // this.colorChange(color);
+                        this.sliderEl.classList.add(_index2.default.subSliderAuto);
                         this.sliderEl.style.left = '50%';
 
                         var ctx = this.canvasCtx;
@@ -813,6 +804,13 @@ var ColorSlider = function ColorSlider(_ref3) {
 
         colorSliderContainer.appendChild(mainColorSlider.El);
         colorSliderContainer.appendChild(subColorSlider.El);
+
+        mainColorSlider.sliderEl.addEventListener('mouseenter', function (e) {
+                subColorSlider.show();
+        });
+        mainColorSlider.sliderEl.addEventListener('touchstart', function (e) {
+                subColorSlider.show();
+        });
 
         colorSliderContainer.addEventListener('mainColorSliderChange', function (e) {
                 e.stopPropagation();
@@ -2020,7 +2018,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, ".colorSliderContainer1XjyG {\n  position: relative;\n}\n.colorSliderContainer1XjyG .colorSliderBox-wJJm {\n  position: relative;\n}\n.colorSliderContainer1XjyG .colorSliderBox-wJJm .canvas3x7Tq {\n  width: 100%;\n  height: 100%;\n  border-radius: 10px;\n  box-sizing: border-box;\n  padding: 0 8px;\n}\n.colorSliderContainer1XjyG .colorSliderBox-wJJm .sliderBox3Uuh6 {\n  position: absolute;\n  top: 0;\n  left: 8px;\n  right: 8px;\n  height: 100%;\n}\n.colorSliderContainer1XjyG .colorSliderBox-wJJm .sliderBox3Uuh6 .slider2fJcr {\n  width: 16px;\n  height: 100%;\n  background-color: white;\n  box-sizing: border-box;\n  border-radius: 4px;\n  border: 1px solid #cecece;\n  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.3);\n}\n.colorSliderContainer1XjyG .colorSliderBox-wJJm .sliderBox3Uuh6 .slider2fJcr .tip2jGKE {\n  position: absolute;\n  width: 2px;\n  height: 50%;\n  top: 50%;\n  left: 50%;\n  transform: translateX(-50%) translateY(-50%);\n  background-color: black;\n}\n.colorSliderContainer1XjyG .subColorSliderBox3nhSp {\n  visibility: hidden;\n  position: absolute;\n  top: 104%;\n  left: 50%;\n  width: 60%;\n  transform: translateX(-50%);\n  opacity: 0;\n  transition: all .5s ease;\n}\n.colorSliderContainer1XjyG .subColorSliderBoxActive2QH-1 {\n  opacity: 1;\n  visibility: visible;\n}\n", ""]);
+exports.push([module.i, ".colorSliderContainer1XjyG {\n  position: relative;\n}\n.colorSliderContainer1XjyG .colorSliderBox-wJJm {\n  position: relative;\n}\n.colorSliderContainer1XjyG .colorSliderBox-wJJm .canvas3x7Tq {\n  width: 100%;\n  height: 100%;\n  border-radius: 10px;\n  box-sizing: border-box;\n  padding: 0 8px;\n}\n.colorSliderContainer1XjyG .colorSliderBox-wJJm .sliderBox3Uuh6 {\n  position: absolute;\n  top: 0;\n  left: 8px;\n  right: 8px;\n  height: 100%;\n}\n.colorSliderContainer1XjyG .colorSliderBox-wJJm .sliderBox3Uuh6 .slider2fJcr {\n  width: 16px;\n  height: 100%;\n  border-top: 4px solid white;\n  border-bottom: 4px solid white;\n  border-left: 7px solid white;\n  border-right: 7px solid white;\n  box-sizing: border-box;\n  border-radius: 4px;\n  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.3);\n}\n.colorSliderContainer1XjyG .subColorSliderBox3nhSp {\n  visibility: hidden;\n  position: absolute;\n  top: 104%;\n  left: 50%;\n  width: 60%;\n  transform: translateX(-50%);\n  opacity: 0;\n  transition: all .5s ease;\n}\n.colorSliderContainer1XjyG .subColorSliderBox3nhSp .subSliderAuto3mUqo {\n  transition: all .5s ease;\n}\n.colorSliderContainer1XjyG .subColorSliderBoxActive2QH-1 {\n  opacity: 1;\n  visibility: visible;\n}\n", ""]);
 
 // exports
 exports.locals = {
@@ -2029,8 +2027,8 @@ exports.locals = {
 	"canvas": "canvas3x7Tq",
 	"sliderBox": "sliderBox3Uuh6",
 	"slider": "slider2fJcr",
-	"tip": "tip2jGKE",
 	"subColorSliderBox": "subColorSliderBox3nhSp",
+	"subSliderAuto": "subSliderAuto3mUqo",
 	"subColorSliderBoxActive": "subColorSliderBoxActive2QH-1"
 };
 

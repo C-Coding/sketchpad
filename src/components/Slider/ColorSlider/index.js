@@ -8,12 +8,7 @@ class MainColorSlider extends Slider {
 
         this.sliderBoxEl.classList.add(s.sliderBox);
 
-        //当前颜色标识
-        const tipEl = document.createElement('div');
-        tipEl.className = s.tip;
-
         this.sliderEl.classList.add(s.slider);
-        this.sliderEl.appendChild(tipEl);
 
 
         //定义canvas背景
@@ -25,7 +20,7 @@ class MainColorSlider extends Slider {
 
         const colorSliderBoxEl = document.createElement('div');
         colorSliderBoxEl.className = s.colorSliderBox;
-        colorSliderBoxEl.classList.add(s.mainColorSliderBox);
+        // colorSliderBoxEl.classList.add(s.mainColorSliderBox);
         colorSliderBoxEl.style.height = height + 'px';
 
         colorSliderBoxEl.appendChild(canvasEl);
@@ -48,17 +43,12 @@ class MainColorSlider extends Slider {
         colorSliderBoxEl.addEventListener('sliderChange', (e) => {
             e.stopPropagation();
             const color = colorList[Math.round(colorList.length * e.detail)];
-            const rgb = `rgb(${color[0]},${color[1]},${color[2]})`
-            tipEl.style.backgroundColor = rgb;
 
             const event = document.createEvent('CustomEvent');
             //发出自定义事件 传递rgb字符串
             event.initCustomEvent('mainColorSliderChange', true, false, color);
             colorSliderBoxEl.dispatchEvent(event);
         })
-
-
-
         this.El = colorSliderBoxEl;//暴露节点
 
     }
@@ -68,18 +58,15 @@ class SubColorSlider extends Slider {
     constructor({ height = 30 }) {
         super()
 
-        this.showTimer=null;
+        this.showTimer = null;
         this.color = [0, 0, 0];
-    
+
 
         this.sliderBoxEl.classList.add(s.sliderBox);
 
-        //当前颜色标识
-        const tipEl = document.createElement('div');
-        tipEl.className = s.tip;
-
         this.sliderEl.classList.add(s.slider);
-        this.sliderEl.appendChild(tipEl);
+
+
         this.sliderEl.style.left = '50%';
 
 
@@ -106,8 +93,11 @@ class SubColorSlider extends Slider {
         //绑定事件
         colorSliderBoxEl.addEventListener('sliderChange', (e) => {
             e.stopPropagation();
+
+            this.sliderEl.classList.remove(s.subSliderAuto);
+
             //计算color值
-            let color=this.color;
+            let color = this.color;
             if (e.detail > 0.5) {
                 const prop = (e.detail - 0.5) * 2;
                 color = [
@@ -122,10 +112,10 @@ class SubColorSlider extends Slider {
             } else if (e.detail === 0.5) {
                 color = this.color;
             }
-            color=color.map(function(item){
+            color = color.map(function (item) {
                 return Math.round(item);
             })
-            this.colorChange(color);
+            // this.colorChange(color);
             this.show();
             const rgb = `rgb(${color[0]},${color[1]},${color[2]})`;
             const event = document.createEvent('CustomEvent');
@@ -137,20 +127,20 @@ class SubColorSlider extends Slider {
 
 
         this.El = colorSliderBoxEl;//暴露节点
-        this.tipEl = tipEl;//暴露tip颜色标识
         this.canvasCtx = canvasCtx;//暴露canvasCtx 以便重绘
         this.subCanvasRender(this.color);//初始化颜色
 
 
     }
-    colorChange(color) {//
-        const rgb = `rgb(${color[0]},${color[1]},${color[2]})`;
-        this.tipEl.style.backgroundColor = rgb;
-        
+    colorChange(color) {
+        // const rgb = `rgb(${color[0]},${color[1]},${color[2]})`;
+        this.color = color;
     }
     subCanvasRender(color) {
-        this.color=color;
         this.colorChange(color);
+        // this.color=color;
+        // this.colorChange(color);
+        this.sliderEl.classList.add(s.subSliderAuto);
         this.sliderEl.style.left = '50%';
 
         const ctx = this.canvasCtx;
@@ -165,26 +155,35 @@ class SubColorSlider extends Slider {
         ctx.fillRect(0, 0, 100, 10);
         ctx.restore();
     }
-    show(){
+    show() {
         clearInterval(this.showTimer);
         this.El.classList.add(s.subColorSliderBoxActive);
-        this.showTimer=setTimeout(()=>{
+        this.showTimer = setTimeout(() => {
             this.El.classList.remove(s.subColorSliderBoxActive);
-        },2000);
+        }, 2000);
     }
 }
 
 
+
+
 class ColorSlider {
-    constructor({height}) {
+    constructor({ height }) {
         const colorSliderContainer = document.createElement('div');
         colorSliderContainer.className = s.colorSliderContainer;
-        const mainColorSlider = new MainColorSlider({height});
-        const subColorSlider = new SubColorSlider({height});
+        const mainColorSlider = new MainColorSlider({ height });
+        const subColorSlider = new SubColorSlider({ height });
 
         colorSliderContainer.appendChild(mainColorSlider.El);
         colorSliderContainer.appendChild(subColorSlider.El);
 
+
+        mainColorSlider.sliderEl.addEventListener('mouseenter', function (e) {
+            subColorSlider.show();
+        })
+        mainColorSlider.sliderEl.addEventListener('touchstart', function (e) {
+            subColorSlider.show();
+        })
 
         colorSliderContainer.addEventListener('mainColorSliderChange', function (e) {
             e.stopPropagation();
