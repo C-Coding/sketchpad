@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -534,7 +534,7 @@ function updateLink (link, options, obj) {
 "use strict";
 
 
-var _Slider2 = __webpack_require__(5);
+var _Slider2 = __webpack_require__(6);
 
 var _Slider3 = _interopRequireDefault(_Slider2);
 
@@ -600,7 +600,7 @@ var _colorList = __webpack_require__(23);
 
 var _colorList2 = _interopRequireDefault(_colorList);
 
-var _Slider3 = __webpack_require__(5);
+var _Slider3 = __webpack_require__(6);
 
 var _Slider4 = _interopRequireDefault(_Slider3);
 
@@ -855,6 +855,12 @@ module.exports = function escape(url) {
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNTMyMTY3MzM5NDYzIiBjbGFzcz0iaWNvbiIgc3R5bGU9IiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjE0NjIiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PGRlZnM+PHN0eWxlIHR5cGU9InRleHQvY3NzIj48L3N0eWxlPjwvZGVmcz48cGF0aCBkPSJNNTA3LjQyNjEzMyAxNTYuNDY3MmMtNC4yNDk2LTAuMTE5NDY3LTguNDEzODY3IDAuMTE5NDY3LTEyLjY0NjQgMC4xMzY1MzNWNTYuNjYxMzMzYzAtMjcuMzkyLTMwLjY1MTczMy00My42MjI0LTUzLjMxNjI2Ni0yOC4yNDUzMzNMODIuNzU2MjY3IDI3Mi4wMjU2YTM0LjEzMzMzMyAzNC4xMzMzMzMgMCAwIDAgMCA1Ni40NzM2bDM1OC43NDEzMzMgMjQzLjU5MjUzM2MyMi42NjQ1MzMgMTUuMzk0MTMzIDUzLjMxNjI2Ny0wLjgzNjI2NyA1My4zMTYyNjctMjguMjQ1MzMzdi0xMDEuMDY4OGMxNzIuODM0MTMzLTIuMDk5MiAzMTYuNTY5NiAxMTguNTQ1MDY3IDMyMy41MTU3MzMgMjc0LjU1MTQ2NyA1LjMyNDggMTE5LjY3MTQ2Ny03MS40MjQgMjI1Ljc1Nzg2Ny0xODUuMjA3NDY3IDI3NC43NTYyNjYtMi4wNjUwNjcgMC44ODc0NjctNC4yMzI1MzMgMi42MjgyNjctNC4wNDQ4IDYuMTc4MTM0IDAuMTUzNiAyLjkwMTMzMyAzLjEwNjEzMyAzLjc1NDY2NyA1LjczNDQgMi45Njk2QzgxNi45MzAxMzMgOTQ3LjY3Nzg2NyA5NTEuMDA1ODY3IDc5MC4zMDYxMzMgOTU2LjA3NDY2NyA2MDAuOTE3MzMzYzYuMzY1ODY3LTIzOC42NjAyNjctMTk0LjQ5MTczMy00MzcuNjQwNTMzLTQ0OC42NDg1MzQtNDQ0LjQ1MDEzM3oiIGZpbGw9IiMyYzJjMmMiIHAtaWQ9IjE0NjMiPjwvcGF0aD48L3N2Zz4="
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -953,13 +959,13 @@ var Slider = function () {
 module.exports = Slider;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Sketchpad = __webpack_require__(7);
+var _Sketchpad = __webpack_require__(8);
 
 var _Sketchpad2 = _interopRequireDefault(_Sketchpad);
 
@@ -970,7 +976,7 @@ window.Sketchpad = _Sketchpad2.default;
 module.exports = _Sketchpad2.default;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -978,11 +984,11 @@ module.exports = _Sketchpad2.default;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _utils = __webpack_require__(8);
+var _utils = __webpack_require__(9);
 
-var _Canvas = __webpack_require__(9);
+var _Canvas = __webpack_require__(10);
 
-var _index = __webpack_require__(10);
+var _index = __webpack_require__(11);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -1061,6 +1067,9 @@ var Sketchpad = function () {
 
         //绘制事件队列    工具绘制函数序列 最大长度受maxRecall限制
         this.renderList = [];
+
+        //被撤销的绘制队列
+        this.recallBackList = [];
 
         //当前的工具组件实例    canvas触发事件时会调用实例中的指定函数
         this.currentTool = null;
@@ -1233,9 +1242,10 @@ var Sketchpad = function () {
             });
 
             //为撤回按钮绑定事件
-            this.containerEl.querySelector('.recall').addEventListener('click', function () {
-                _this3.recall();
-            });
+            this.containerEl.querySelector('.recall').addEventListener('click', this.recall.bind(this));
+
+            this.containerEl.querySelector('.recallBack').addEventListener('click', this.recallBack.bind(this));
+
             if (this.saveBtn) {
                 var saveBtnEl = this.containerEl.querySelector('.save');
                 saveBtnEl.style.display = 'inline-block';
@@ -1284,11 +1294,14 @@ var Sketchpad = function () {
                 (0, _Canvas.canvasResize)(_this4.recallCanvasEl, _this4.recallCanvasCtx, _this4.canvasContainerEl.clientWidth * _this4.dpr);
             }, 200);
         }
+
         //接收一个ctx渲染函数
 
     }, {
         key: 'render',
         value: function render(renderFn) {
+            this.recallBackClean();
+
             if (renderFn.needRender) {
                 renderFn(this.mainCanvasCtx); //对mainCanvas进行绘制
             }
@@ -1305,25 +1318,40 @@ var Sketchpad = function () {
             this.recallBtnStatus();
         }
 
-        //处理撤销按钮显示状态
-
-    }, {
-        key: 'recallBtnStatus',
-        value: function recallBtnStatus() {
-            //判断recall按钮透明度指示
-            if (this.renderList.length === 0) {
-                this.containerEl.querySelector('.recall').classList.add('noRecall');
-            } else {
-                this.containerEl.querySelector('.recall').classList.remove('noRecall');
-            }
-        }
         //执行撤销
 
     }, {
         key: 'recall',
         value: function recall() {
-            //删除最新的渲染函数
-            this.renderList.splice(this.renderList.length - 1, 1);
+            if (this.renderList.length > 0) {
+                var fn = this.renderList.splice(this.renderList.length - 1, 1)[0];
+                this.recallBackList.unshift(fn);
+                this.recallRender();
+            }
+        }
+        //执行撤销回退
+
+    }, {
+        key: 'recallBack',
+        value: function recallBack() {
+            if (this.recallBackList.length > 0) {
+                var fn = this.recallBackList.splice(0, 1)[0];
+                this.renderList.push(fn);
+                this.recallRender();
+            }
+        }
+        //清空recallback
+
+    }, {
+        key: 'recallBackClean',
+        value: function recallBackClean() {
+            this.recallBackList = [];
+        }
+        //recall之后执行渲染
+
+    }, {
+        key: 'recallRender',
+        value: function recallRender() {
             //新建临时canvas防止需要的recall过多导致的页面抖动
             var tmpCanvasEl = document.createElement('canvas');
             tmpCanvasEl.width = this.mainCanvasEl.width;
@@ -1343,6 +1371,24 @@ var Sketchpad = function () {
 
             //处理recallbtn状态
             this.recallBtnStatus();
+        }
+        //处理撤销按钮显示状态
+
+    }, {
+        key: 'recallBtnStatus',
+        value: function recallBtnStatus() {
+            //判断recall按钮透明度指示
+            if (this.renderList.length === 0) {
+                this.containerEl.querySelector('.recall').classList.add('noRecall');
+            } else {
+                this.containerEl.querySelector('.recall').classList.remove('noRecall');
+            }
+
+            if (this.recallBackList.length === 0) {
+                this.containerEl.querySelector('.recallBack').classList.add('noRecallBack');
+            } else {
+                this.containerEl.querySelector('.recallBack').classList.remove('noRecallBack');
+            }
         }
 
         //执行保存
@@ -1386,6 +1432,7 @@ var Sketchpad = function () {
             this.frontCanvasCtx.clearRect(0, 0, this.frontCanvasEl.width, this.frontCanvasEl.height);
             this.mainCanvasCtx.clearRect(0, 0, this.mainCanvasEl.width, this.mainCanvasEl.height);
             this.renderList = [];
+            this.recallBackList = [];
             this.recallBtnStatus();
         }
     }, {
@@ -1399,7 +1446,7 @@ var Sketchpad = function () {
 module.exports = Sketchpad;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1432,7 +1479,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1457,13 +1504,13 @@ module.exports = {
 };
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(11);
+var content = __webpack_require__(12);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1488,7 +1535,7 @@ if(false) {
 }
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var escape = __webpack_require__(4);
@@ -1497,7 +1544,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, ".containerbUR-5 .btnContainer {\n  padding: 10px 5px;\n  display: flex;\n}\n.containerbUR-5 .btnContainer > * {\n  border-radius: 4px;\n  background-color: white;\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: 90% 90%;\n  border: 1px solid #d6d6d6;\n  box-sizing: border-box;\n}\n.containerbUR-5 .btnContainer > * + * {\n  margin-left: 5px;\n}\n.containerbUR-5 .btnContainer .active {\n  border: 1px solid black;\n}\n.containerbUR-5 .optionContainer {\n  box-sizing: border-box;\n  padding: 10px 20px;\n}\n.containerbUR-5 .optionContainer > div {\n  display: none;\n}\n.containerbUR-5 .optionContainer .active {\n  display: block;\n}\n.containerbUR-5 .functionContainer {\n  text-align: right;\n  line-height: 1px;\n}\n.containerbUR-5 .functionContainer > div {\n  width: 30px;\n  height: 30px;\n  background-size: 20px 20px;\n  background-position: center ;\n  background-repeat: no-repeat;\n  cursor: pointer;\n}\n.containerbUR-5 .functionContainer .save {\n  display: none;\n  background-image: url(" + escape(__webpack_require__(12)) + ");\n}\n.containerbUR-5 .functionContainer .recall {\n  display: inline-block;\n  background-image: url(" + escape(__webpack_require__(13)) + ");\n  opacity: 1;\n}\n.containerbUR-5 .functionContainer .noRecall {\n  opacity: 0.2;\n}\n.containerbUR-5 .noMouse {\n  cursor: none;\n}\n.containerbUR-5 .canvasContainer {\n  overflow: hidden;\n  position: relative;\n  background-color: #d8d8d8;\n  background-image: url(" + escape(__webpack_require__(14)) + ");\n  box-shadow: 1px 1px 6px 0 #858585;\n}\n.containerbUR-5 .canvasContainer .frontCanvas {\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0;\n  z-index: 2;\n}\n.containerbUR-5 .canvasContainer .mainCanvas {\n  height: 100%;\n  z-index: 1;\n}\n", ""]);
+exports.push([module.i, ".containerbUR-5 .btnContainer {\n  padding: 10px 5px;\n  display: flex;\n}\n.containerbUR-5 .btnContainer > * {\n  border-radius: 4px;\n  background-color: white;\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: 90% 90%;\n  border: 1px solid #d6d6d6;\n  box-sizing: border-box;\n}\n.containerbUR-5 .btnContainer > * + * {\n  margin-left: 5px;\n}\n.containerbUR-5 .btnContainer .active {\n  border: 1px solid black;\n}\n.containerbUR-5 .optionContainer {\n  box-sizing: border-box;\n  padding: 10px 20px;\n}\n.containerbUR-5 .optionContainer > div {\n  display: none;\n}\n.containerbUR-5 .optionContainer .active {\n  display: block;\n}\n.containerbUR-5 .functionContainer {\n  display: flex;\n  justify-content: flex-end;\n}\n.containerbUR-5 .functionContainer > div {\n  width: 30px;\n  height: 30px;\n  background-size: 20px 20px;\n  background-position: center ;\n  background-repeat: no-repeat;\n  cursor: pointer;\n}\n.containerbUR-5 .functionContainer .save {\n  display: none;\n  background-image: url(" + escape(__webpack_require__(13)) + ");\n}\n.containerbUR-5 .functionContainer .recall {\n  display: inline-block;\n  background-image: url(" + escape(__webpack_require__(5)) + ");\n  opacity: 1;\n}\n.containerbUR-5 .functionContainer .noRecall {\n  opacity: 0.2;\n}\n.containerbUR-5 .functionContainer .recallBack {\n  display: inline-block;\n  background-image: url(" + escape(__webpack_require__(5)) + ");\n  opacity: 1;\n  transform: rotateZ(180deg);\n}\n.containerbUR-5 .functionContainer .noRecallBack {\n  opacity: 0.2;\n}\n.containerbUR-5 .noMouse {\n  cursor: none;\n}\n.containerbUR-5 .canvasContainer {\n  overflow: hidden;\n  position: relative;\n  background-color: #d8d8d8;\n  background-image: url(" + escape(__webpack_require__(14)) + ");\n  box-shadow: 1px 1px 6px 0 #858585;\n}\n.containerbUR-5 .canvasContainer .frontCanvas {\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0;\n  z-index: 2;\n}\n.containerbUR-5 .canvasContainer .mainCanvas {\n  height: 100%;\n  z-index: 1;\n}\n", ""]);
 
 // exports
 exports.locals = {
@@ -1505,16 +1552,10 @@ exports.locals = {
 };
 
 /***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNTMyMTY3NDQxMDE2IiBjbGFzcz0iaWNvbiIgc3R5bGU9IiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjM3MjYiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PGRlZnM+PHN0eWxlIHR5cGU9InRleHQvY3NzIj48L3N0eWxlPjwvZGVmcz48cGF0aCBkPSJNMzIgMzJsMCA4MjIuODUxYzAgNzUuNDMxIDYxLjcxNiAxMzcuMTQ3IDEzNy4xNDIgMTM3LjE0N2w4MjIuODU2IDAgMC05NTkuOTk4LTk1OS45OTggMHpNNzg2LjI4MiA5MjMuNDI5bC0yNzQuMjgzIDAgMC0xMzcuMTQ3LTEzNy4xNDIgMCAwIDEzNy4xNDctMTM3LjE0MiAwIDAtMjc0LjI4NCA1NDguNTY4IDAgMCAyNzQuMjg0ek04NTQuODUxIDQ0My40MjZjMCAzNC4yODktMzQuMjg0IDY4LjU3My02OC41NjkgNjguNTczbC01NDguNTY4IDBjLTM0LjI4OSAwLTY4LjU3My0zNC4yODQtNjguNTczLTY4LjU3M2wwLTM0Mi44NTIgNjg1LjcwOSAwIDAgMzQyLjg1MnoiIHAtaWQ9IjM3MjciIGZpbGw9IiMyYzJjMmMiPjwvcGF0aD48L3N2Zz4="
-
-/***/ }),
 /* 13 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNTMyMTY3MzM5NDYzIiBjbGFzcz0iaWNvbiIgc3R5bGU9IiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjE0NjIiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PGRlZnM+PHN0eWxlIHR5cGU9InRleHQvY3NzIj48L3N0eWxlPjwvZGVmcz48cGF0aCBkPSJNNTA3LjQyNjEzMyAxNTYuNDY3MmMtNC4yNDk2LTAuMTE5NDY3LTguNDEzODY3IDAuMTE5NDY3LTEyLjY0NjQgMC4xMzY1MzNWNTYuNjYxMzMzYzAtMjcuMzkyLTMwLjY1MTczMy00My42MjI0LTUzLjMxNjI2Ni0yOC4yNDUzMzNMODIuNzU2MjY3IDI3Mi4wMjU2YTM0LjEzMzMzMyAzNC4xMzMzMzMgMCAwIDAgMCA1Ni40NzM2bDM1OC43NDEzMzMgMjQzLjU5MjUzM2MyMi42NjQ1MzMgMTUuMzk0MTMzIDUzLjMxNjI2Ny0wLjgzNjI2NyA1My4zMTYyNjctMjguMjQ1MzMzdi0xMDEuMDY4OGMxNzIuODM0MTMzLTIuMDk5MiAzMTYuNTY5NiAxMTguNTQ1MDY3IDMyMy41MTU3MzMgMjc0LjU1MTQ2NyA1LjMyNDggMTE5LjY3MTQ2Ny03MS40MjQgMjI1Ljc1Nzg2Ny0xODUuMjA3NDY3IDI3NC43NTYyNjYtMi4wNjUwNjcgMC44ODc0NjctNC4yMzI1MzMgMi42MjgyNjctNC4wNDQ4IDYuMTc4MTM0IDAuMTUzNiAyLjkwMTMzMyAzLjEwNjEzMyAzLjc1NDY2NyA1LjczNDQgMi45Njk2QzgxNi45MzAxMzMgOTQ3LjY3Nzg2NyA5NTEuMDA1ODY3IDc5MC4zMDYxMzMgOTU2LjA3NDY2NyA2MDAuOTE3MzMzYzYuMzY1ODY3LTIzOC42NjAyNjctMTk0LjQ5MTczMy00MzcuNjQwNTMzLTQ0OC42NDg1MzQtNDQ0LjQ1MDEzM3oiIGZpbGw9IiMyYzJjMmMiIHAtaWQ9IjE0NjMiPjwvcGF0aD48L3N2Zz4="
+module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNTMyMTY3NDQxMDE2IiBjbGFzcz0iaWNvbiIgc3R5bGU9IiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjM3MjYiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PGRlZnM+PHN0eWxlIHR5cGU9InRleHQvY3NzIj48L3N0eWxlPjwvZGVmcz48cGF0aCBkPSJNMzIgMzJsMCA4MjIuODUxYzAgNzUuNDMxIDYxLjcxNiAxMzcuMTQ3IDEzNy4xNDIgMTM3LjE0N2w4MjIuODU2IDAgMC05NTkuOTk4LTk1OS45OTggMHpNNzg2LjI4MiA5MjMuNDI5bC0yNzQuMjgzIDAgMC0xMzcuMTQ3LTEzNy4xNDIgMCAwIDEzNy4xNDctMTM3LjE0MiAwIDAtMjc0LjI4NCA1NDguNTY4IDAgMCAyNzQuMjg0ek04NTQuODUxIDQ0My40MjZjMCAzNC4yODktMzQuMjg0IDY4LjU3My02OC41NjkgNjguNTczbC01NDguNTY4IDBjLTM0LjI4OSAwLTY4LjU3My0zNC4yODQtNjguNTczLTY4LjU3M2wwLTM0Mi44NTIgNjg1LjcwOSAwIDAgMzQyLjg1MnoiIHAtaWQ9IjM3MjciIGZpbGw9IiMyYzJjMmMiPjwvcGF0aD48L3N2Zz4="
 
 /***/ }),
 /* 14 */
@@ -1621,7 +1662,7 @@ module.exports = function (css) {
 /* 16 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"btnContainer\"></div>\r\n<div class=\"optionContainer\"></div>\r\n<div class=\"functionContainer\">\r\n    <div class=\"recall noRecall\"></div>\r\n    <div class=\"save\"></div>\r\n</div>\r\n<div class=\"canvasContainer\">\r\n    <canvas class=\"frontCanvas\"></canvas>\r\n    <canvas class=\"mainCanvas\"></canvas>\r\n</div>";
+module.exports = "<div class=\"btnContainer\"></div>\r\n<div class=\"optionContainer\"></div>\r\n<div class=\"functionContainer\">\r\n    <div class=\"recall noRecall\"></div>\r\n    <div class=\"recallBack noRecallBack\"></div>\r\n    <div class=\"save\"></div>\r\n</div>\r\n<div class=\"canvasContainer\">\r\n    <canvas class=\"frontCanvas\"></canvas>\r\n    <canvas class=\"mainCanvas\"></canvas>\r\n</div>";
 
 /***/ }),
 /* 17 */

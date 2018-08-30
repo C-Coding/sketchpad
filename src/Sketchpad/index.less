@@ -32,8 +32,11 @@
     }
 
     :global(.functionContainer){
-        text-align: right;
-        line-height: 1px;
+        // text-align: right;
+        // line-height: 1px;
+        display: flex;
+        justify-content: flex-end;
+
         >div{
             width: 30px;
             height:30px;
@@ -52,6 +55,15 @@
             opacity: 1;
         }
         :global(.noRecall){
+            opacity: 0.2;
+        }
+        :global(.recallBack){
+            display: inline-block;
+            background-image: url("@/Sketchpad/img/recall.svg");
+            opacity: 1;
+            transform: rotateZ(180deg);
+        }
+        :global(.noRecallBack){
             opacity: 0.2;
         }
     }

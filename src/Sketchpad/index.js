@@ -61,6 +61,9 @@ class Sketchpad {
         //绘制事件队列    工具绘制函数序列 最大长度受maxRecall限制
         this.renderList = [];
 
+        //被撤销的绘制队列
+        this.recallBackList = [];
+
         //当前的工具组件实例    canvas触发事件时会调用实例中的指定函数
         this.currentTool = null;
 
@@ -213,9 +216,10 @@ class Sketchpad {
 
 
         //为撤回按钮绑定事件
-        this.containerEl.querySelector('.recall').addEventListener('click', () => {
-            this.recall();
-        })
+        this.containerEl.querySelector('.recall').addEventListener('click', this.recall.bind(this));
+
+        this.containerEl.querySelector('.recallBack').addEventListener('click', this.recallBack.bind(this));
+
         if (this.saveBtn) {
             const saveBtnEl = this.containerEl.querySelector('.save');
             saveBtnEl.style.display = 'inline-block';
@@ -256,8 +260,13 @@ class Sketchpad {
             canvasResize(this.recallCanvasEl, this.recallCanvasCtx, this.canvasContainerEl.clientWidth * this.dpr);
         }, 200);
     }
+
+
+
     //接收一个ctx渲染函数
     render(renderFn) {
+        this.recallBackClean();
+
         if (renderFn.needRender) {
             renderFn(this.mainCanvasCtx);//对mainCanvas进行绘制
         }
@@ -273,18 +282,34 @@ class Sketchpad {
         this.recallBtnStatus();
     }
 
-    //处理撤销按钮显示状态
-    recallBtnStatus() {//判断recall按钮透明度指示
-        if (this.renderList.length === 0) {
-            this.containerEl.querySelector('.recall').classList.add('noRecall');
-        } else {
-            this.containerEl.querySelector('.recall').classList.remove('noRecall');
-        }
-    }
+
+
+
+
+
+
     //执行撤销
     recall() {
-        //删除最新的渲染函数
-        this.renderList.splice(this.renderList.length - 1, 1);
+        if (this.renderList.length > 0) {
+            const fn = this.renderList.splice(this.renderList.length - 1, 1)[0];
+            this.recallBackList.unshift(fn);
+            this.recallRender();
+        }
+    }
+    //执行撤销回退
+    recallBack() {
+        if (this.recallBackList.length > 0) {
+            const fn = this.recallBackList.splice(0, 1)[0];
+            this.renderList.push(fn);
+            this.recallRender();
+        }
+    }
+    //清空recallback
+    recallBackClean() {
+        this.recallBackList = [];
+    }
+    //recall之后执行渲染
+    recallRender() {
         //新建临时canvas防止需要的recall过多导致的页面抖动
         const tmpCanvasEl = document.createElement('canvas');
         tmpCanvasEl.width = this.mainCanvasEl.width;
@@ -303,6 +328,20 @@ class Sketchpad {
 
         //处理recallbtn状态
         this.recallBtnStatus();
+    }
+    //处理撤销按钮显示状态
+    recallBtnStatus() {//判断recall按钮透明度指示
+        if (this.renderList.length === 0) {
+            this.containerEl.querySelector('.recall').classList.add('noRecall');
+        } else {
+            this.containerEl.querySelector('.recall').classList.remove('noRecall');
+        }
+
+        if (this.recallBackList.length === 0) {
+            this.containerEl.querySelector('.recallBack').classList.add('noRecallBack');
+        } else {
+            this.containerEl.querySelector('.recallBack').classList.remove('noRecallBack');
+        }
     }
 
 
@@ -357,6 +396,7 @@ class Sketchpad {
         this.frontCanvasCtx.clearRect(0, 0, this.frontCanvasEl.width, this.frontCanvasEl.height);
         this.mainCanvasCtx.clearRect(0, 0, this.mainCanvasEl.width, this.mainCanvasEl.height);
         this.renderList = [];
+        this.recallBackList = [];
         this.recallBtnStatus();
     }
 
