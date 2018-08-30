@@ -96,6 +96,8 @@ class Sketchpad {
 
         this.mainCanvasEl.width = this.canvasContainerEl.clientWidth * this.dpr;
         this.mainCanvasEl.style.width = this.canvasContainerEl.clientWidth + 'px';
+
+        this.recallCanvasEl.width = this.canvasContainerEl.clientWidth * this.dpr;
         //监听窗口resize
         window.addEventListener('resize', this.resize.bind(this));
         //初始化完毕 显示完整container
