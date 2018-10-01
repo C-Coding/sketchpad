@@ -5,7 +5,7 @@ import html from './index.html';
 
 
 class Sketchpad {
-    constructor({ el, height = 400, toolBtnSize = 50, saveBtn = true, toolList = ['Brush'], maxRecall = 5 }) {
+    constructor({ el, height = 400, toolBtnSize = 50, saveBtn = true, toolList = ['Brush'], maxRecall = 5, saveBg = 'rgba(0,0,0,0)' }) {
         //定义tool按钮大小
         this.toolBtnSize = toolBtnSize;
         //设备像素px比
@@ -14,6 +14,8 @@ class Sketchpad {
         this.maxRecall = maxRecall;
         //是否显示保存按钮
         this.saveBtn = saveBtn;
+        //保存时的背景颜色
+        this.saveBg = saveBg;
 
         if (typeof el === 'string') {
             try {
@@ -91,13 +93,9 @@ class Sketchpad {
         //执行事件绑定init
         this.eventListenerInit();
         //初始化canvas尺寸
-        this.frontCanvasEl.width = this.canvasContainerEl.clientWidth * this.dpr;
-        this.frontCanvasEl.style.width = this.canvasContainerEl.clientWidth + 'px';
+        this.frontCanvasEl.width = this.mainCanvasEl.width = this.recallCanvasEl.width = this.canvasContainerEl.clientWidth * this.dpr;
+        this.frontCanvasEl.style.width = this.mainCanvasEl.style.width = this.canvasContainerEl.clientWidth + 'px';
 
-        this.mainCanvasEl.width = this.canvasContainerEl.clientWidth * this.dpr;
-        this.mainCanvasEl.style.width = this.canvasContainerEl.clientWidth + 'px';
-
-        this.recallCanvasEl.width = this.canvasContainerEl.clientWidth * this.dpr;
         //监听窗口resize
         window.addEventListener('resize', this.resize.bind(this));
         //初始化完毕 显示完整container
@@ -127,6 +125,7 @@ class Sketchpad {
             this.toolChange(tool);
         }
     }
+    //兼容旧版本接口
     registerTool(Tool) {
         this.toolRegister(Tool)
     }
@@ -354,7 +353,7 @@ class Sketchpad {
             saveCanvas.width = this.mainCanvasEl.width;
             saveCanvas.height = this.mainCanvasEl.height;
             const ctx = saveCanvas.getContext("2d");
-            ctx.fillStyle = "white";
+            ctx.fillStyle = this.saveBg;
             ctx.fillRect(0, 0, saveCanvas.width, saveCanvas.height);
             ctx.drawImage(this.mainCanvasEl, 0, 0);
 
@@ -390,8 +389,6 @@ class Sketchpad {
         } else {//返回base64
             return this.mainCanvasEl.toDataURL('image/png');
         }
-
-
     }
     //清空画布同时清空所有撤销记录
     clean() {

@@ -4,9 +4,9 @@ import s from './index.less';
 import html from './index.html';
 
 class Brush {
-    constructor({ frontCanvasEl,frontCanvasCtx, mainCanvasCtx }) {//接收Sketchpad传递的mainCanvasCtx
-        this.frontCanvasEl=frontCanvasEl;
-        this.frontCanvasCtx=frontCanvasCtx;
+    constructor({ frontCanvasEl, frontCanvasCtx, mainCanvasCtx }) {//接收Sketchpad传递的mainCanvasCtx
+        this.frontCanvasEl = frontCanvasEl;
+        this.frontCanvasCtx = frontCanvasCtx;
         this.mainCanvasCtx = mainCanvasCtx;
 
         this.dpr = window.devicePixelRatio;
@@ -81,7 +81,6 @@ class Brush {
     drawMoveFn(e) {
         this.linePathList.push([e.canvasX, e.canvasY]);
         this.render();
-
     }
 
     drawEndFn(e) {
@@ -143,7 +142,7 @@ class Brush {
     }
 
     mousemoveFn(e) {
-        const ctx=this.frontCanvasCtx;
+        const ctx = this.frontCanvasCtx;
         ctx.clearRect(0, 0, this.frontCanvasEl.width, this.frontCanvasEl.height);
         ctx.save();
         ctx.beginPath();

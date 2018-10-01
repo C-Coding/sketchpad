@@ -45,6 +45,8 @@ toolList: ['Brush','Eraser']    //tool array： Brush Eraser Line Polygon
 saveBtn: true                   //display the save picture button
 
 maxRecall: 20                   //number of recall
+
+saveBg: 'rgba(0,0,0,0)'         //The default is transparent
 ```
 
 # Api
