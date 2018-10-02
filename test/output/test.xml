@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="1"
+            failures="0"
+            tests="1">
+
+  <testsuite name="test"
+    errors="1" failures="0" hostname="" id="" package="test" skipped="0"
+    tests="1" time="0.02200" timestamp="Mon, 01 Oct 2018 15:16:44 GMT">
+  
+    <testcase name="search nightwatch on baidu" classname="test" time="0.02200" assertions="0">
+    </testcase>
+  
+
+  
+    <system-err>
+        Error while running [Test / search nightwatch on baidu]:
+
+  TypeError: browser.url(...).waitForElementVisible(...).expect.element(...).to.not.be.present.end is not a function
+    at Object.search nightwatch on baidu (C:\git\Sketchpad\test\test.js:18:8)
+    at Module.call (C:\git\Sketchpad\node_modules\nightwatch\lib\runner\module.js:62:34)
+    at C:\git\Sketchpad\node_modules\nightwatch\lib\runner\testcase.js:70:29
+    at _fulfilled (C:\git\Sketchpad\node_modules\nightwatch\node_modules\q\q.js:834:54)
+    at self.promiseDispatch.done (C:\git\Sketchpad\node_modules\nightwatch\node_modules\q\q.js:863:30)
+    at Promise.promise.promiseDispatch (C:\git\Sketchpad\node_modules\nightwatch\node_modules\q\q.js:796:13)
+    at C:\git\Sketchpad\node_modules\nightwatch\node_modules\q\q.js:556:49
+    at runSingle (C:\git\Sketchpad\node_modules\nightwatch\node_modules\q\q.js:137:13)
+    at flush (C:\git\Sketchpad\node_modules\nightwatch\node_modules\q\q.js:125:13)
+    at _combinedTickCallback (internal/process/next_tick.js:131:7)
+    </system-err>
+  
+
+  
+  </testsuite>
+</testsuites>
