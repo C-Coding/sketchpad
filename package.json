@@ -49,5 +49,8 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "dependencies": {
+    "npm": "^6.4.1"
+  }
 }
